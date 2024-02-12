@@ -6,7 +6,7 @@ import javax.imageio.ImageIO;
 public class Main {
     public static void main(String[] args) {
         String imgPath = "resources/theImage.jpg";
-        BufferedImage currentImg = null;
+        BufferedImage currentImg;
         try {
             currentImg = fetchImage(imgPath);
 
@@ -16,7 +16,7 @@ public class Main {
         }
 
 
-        //Creating a 2d Array using BufferedImage dimensions e.g
+        //Creating a 2d Array using BufferedImage dimensions
         int[][] currentImg2dArray = create2dArrayUsingBufferedImage(currentImg);
 
         //Populate the currentImg2dArray with the corresponding RGB value of each pixel of currentImg
@@ -34,7 +34,6 @@ public class Main {
         //Export the img
         exportImg(outputBufferedImage,outputFile);
 
-        //
     }
 
 
@@ -127,6 +126,24 @@ public class Main {
     public static int convertRGBAtoInt(int red, int green, int blue,int alpha){
       return (alpha << 24) | (red << 16) | (green << 8) | blue;
     }
+
+
+    public static int extractAlphaFromRGBAint(int intOfRGBA){
+        return (intOfRGBA >> 24) & 0xFF;
+    }
+
+    public static int extractRedFromRGBAint(int intOfRGBA){
+     return (intOfRGBA >> 16) & 0xFF;
+    }
+
+    public static int extractGreenFromRGBAint(int intOfRGBA){
+        return (intOfRGBA >> 8) & 0xFF;
+    }
+
+    public static int extractBlueFromRGBAint(int intOfRGBA){
+        return intOfRGBA & 0xFF;
+    }
+
 
 
 }
