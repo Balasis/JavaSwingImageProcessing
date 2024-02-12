@@ -18,6 +18,47 @@ public class Main {
                 //Populate the currentImg2dArray with the corresponding RGB value of each pixel of currentImg
                 populate2dArrWithRGBFromTheBufferedImg(currentImg2dArray,currentImg);
 
+
+                //Turn the first  "x":30 in our case   rows rgb into black (0,0,0) (if rows exist)
+                turnFirstTenRowsIntoBlack(currentImg2dArray,130);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                //Let's recreate an image out of the current processed 2d Array
+                BufferedImage outputBufferedImage = new BufferedImage(currentImg2dArray.length, currentImg2dArray[0].length, BufferedImage.TYPE_INT_RGB);
+
+                for (int x = 0; x < currentImg2dArray.length; x++) {
+                    for (int y = 0; y < currentImg2dArray[0].length; y++) {
+                        outputBufferedImage.setRGB(x, y, currentImg2dArray[x][y]);
+                    }
+                }
+
+
+
+
+
+
+                File outputFile = new File("C:/Users/Oathkeeper/Desktop/output.png");
+                try {
+                    ImageIO.write(outputBufferedImage, "png", outputFile);
+                    System.out.println("Image saved successfully.");
+                } catch (IOException e) {
+                    System.err.println("Error saving image: " + e.getMessage());
+                }
+
+/*
                                         //Testing functionality(Delete later):
 
                 //in order to see the real value from the int number that represent the rgb we need to do some
@@ -31,7 +72,7 @@ public class Main {
                 System.out.println("Red: " + red);
                 System.out.println("Green: " + green);
                 System.out.println("Blue: " + blue);
-
+*/
 
 
 
@@ -42,6 +83,20 @@ public class Main {
             }
 
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -82,5 +137,29 @@ public class Main {
             }
         }
 
+
+
+        public static void turnFirstTenRowsIntoBlack(int[][] the2dArray,int rowsToBlacken){
+
+
+            //find the minimum number of rows that exist till 10
+            //when it finds the number that is less or equal to length it breaks out the loop
+            int minNumberOfRows=1;
+            for (int i = rowsToBlacken; i >=0; i--) {
+                if (i<= the2dArray[0].length){
+                    minNumberOfRows=i;
+                    break;
+                }
+            }
+
+            //loop through each pixel and put the int number that represents rgb(0,0,0,255)..which is -16777216
+            for (int x = 0; x < the2dArray.length; x++) {
+                for (int y = 0; y < minNumberOfRows; y++) {
+                    the2dArray[x][y]=-16777216;
+                }
+            }
+
+
+        }
 
 }
