@@ -37,6 +37,8 @@ public class Main {
 
 
                 //Let's recreate an image out of the current processed 2d Array
+
+
                 BufferedImage outputBufferedImage = new BufferedImage(currentImg2dArray.length, currentImg2dArray[0].length, BufferedImage.TYPE_INT_RGB);
 
                 for (int x = 0; x < currentImg2dArray.length; x++) {
@@ -57,6 +59,8 @@ public class Main {
                 } catch (IOException e) {
                     System.err.println("Error saving image: " + e.getMessage());
                 }
+
+
 
 /*
                                         //Testing functionality(Delete later):
@@ -151,6 +155,7 @@ public class Main {
                     break;
                 }
             }
+
 
             //loop through each pixel and put the int number that represents rgb(0,0,0,255)..which is -16777216
             for (int x = 0; x < the2dArray.length; x++) {
