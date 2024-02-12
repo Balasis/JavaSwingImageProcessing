@@ -18,20 +18,6 @@ public class Main {
                 //Populate the currentImg2dArray with the corresponding RGB value of each pixel of currentImg
                 populate2dArrWithRGBFromTheBufferedImg(currentImg2dArray,currentImg);
 
-
-                //Creating a loop which will target each one of those pixels and saves the rgb color
-                //the rgb color from getRGB() returns an int which contains alpha (if present), red, green, blue.
-
-
-                //As we know each color(red,green,blue) is saved in 1 byte(8bit).Therefore if we would like to
-                //extract the red color we should shift 16 bit (pixel >> 16) then mask(take only) with 0xFF to
-                // keep only the least significant 8 bits.
-
-                //e.g
-                //int pixel = image.getRGB(x, y);  // Example pixel value
-                //int redComponent = (pixel >> 16) & 0xFF; // Extract red component
-
-
             }
             catch (IOException e){
                 //printStackTrace returns a detailed list of exception including the method called during the exception(error)
@@ -66,6 +52,11 @@ public class Main {
 
 
 
+
+        //By Using getRGB(x,y) we get the rgb value of its pixel (which is an int number) and we place it inside each
+        //the corresponding array element that represents this pixel in the2dArray.
+        //Furthmore, there is no dimension/indexDifferences check between the2dArray and the bufferedImg
+        //Since the2dArray was made out of the dimensions of theBufferedImage.
         public static void populate2dArrWithRGBFromTheBufferedImg(int[][] the2dArray,BufferedImage theBufferedImage){
             for (int x = 0; x < the2dArray.length; x++) {
 
@@ -74,10 +65,15 @@ public class Main {
                 }
 
             }
-            int alpha = (the2dArray[0][2] >> 24) & 0xFF;
-            int red = (the2dArray[0][2] >> 16) & 0xFF;
-            int green = (the2dArray[0][2] >> 8) & 0xFF;
-            int blue = the2dArray[0][2] & 0xFF;
+
+
+            //in order to see the real value from the int number that represent the rgb we need to do some
+            //shifting ( >> 24 ) and some masking  (0xFF)<-taking the last 8 LeastSignificantBits (LSB)
+            //The followings will be removed from this method its only for now for testing purposes
+            int alpha = (the2dArray[0][0] >> 24) & 0xFF;
+            int red = (the2dArray[0][0] >> 16) & 0xFF;
+            int green = (the2dArray[0][0] >> 8) & 0xFF;
+            int blue = the2dArray[0][0] & 0xFF;
             System.out.println("Alpha: " + alpha);
             System.out.println("Red: " + red);
             System.out.println("Green: " + green);
