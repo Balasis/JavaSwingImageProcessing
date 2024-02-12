@@ -5,7 +5,7 @@ import javax.imageio.ImageIO;
 
 public class Main {
     public static void main(String[] args) {
-        String imgPath = "resources/theImage.png";
+        String imgPath = "resources/theImage.jpg";
         BufferedImage currentImg = null;
         try {
             currentImg = fetchImage(imgPath);
@@ -28,14 +28,19 @@ public class Main {
         // Create new bufferedImage from the current processed 2d Array
         BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(currentImg2dArray);
 
-        //Set path for the image to be saved as well as the name (always set png extension)
-        File outputFile = new File("resources/theImageOutput.png");
+        //Set path for the image to be saved as well as the name
+        File outputFile = new File("resources/theImageOutput.jpg");
 
         //Export the img
         exportImg(outputBufferedImage,outputFile);
 
-
+        //
     }
+
+
+
+
+
 
 
 
@@ -53,12 +58,6 @@ public class Main {
             }
             return outputBufferedImage;
         }
-
-
-
-
-
-
 
 
 
@@ -117,11 +116,16 @@ public class Main {
 
     public static void exportImg(BufferedImage outputBufferedImage,File outputFile){
         try {
-            ImageIO.write(outputBufferedImage, "png", outputFile);
+            ImageIO.write(outputBufferedImage, "jpg", outputFile);
             System.out.println("Image saved successfully.");
         } catch (IOException e) {
             System.err.println("Error saving image: " + e.getMessage());
         }
+    }
+
+
+    public static int convertRGBAtoInt(int red, int green, int blue,int alpha){
+      return (alpha << 24) | (red << 16) | (green << 8) | blue;
     }
 
 
