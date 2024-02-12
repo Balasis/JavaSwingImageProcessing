@@ -23,7 +23,11 @@ public class Main {
         populate2dArrWithRGBFromTheBufferedImg(currentImg2dArray, currentImg);
 
         // Turn the first "x":30 in our case rows rgb into black (0,0,0) (if rows exist)
-        turnFirstTenRowsIntoBlack(currentImg2dArray, 130);
+       // turnFirstTenRowsIntoBlack(currentImg2dArray, 130);
+
+        //Turn it to grayscale
+        convertIntoGreyScale(currentImg2dArray);
+
 
         // Create new bufferedImage from the current processed 2d Array
         BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(currentImg2dArray);
@@ -43,8 +47,26 @@ public class Main {
 
 
 
+    public static int convertRGBAtoInt(int red, int green, int blue,int alpha){
+        return (alpha << 24) | (red << 16) | (green << 8) | blue;
+    }
 
 
+    public static int extractAlphaFromRGBAint(int intOfRGBA){
+        return (intOfRGBA >> 24) & 0xFF;
+    }
+
+    public static int extractRedFromRGBAint(int intOfRGBA){
+        return (intOfRGBA >> 16) & 0xFF;
+    }
+
+    public static int extractGreenFromRGBAint(int intOfRGBA){
+        return (intOfRGBA >> 8) & 0xFF;
+    }
+
+    public static int extractBlueFromRGBAint(int intOfRGBA){
+        return intOfRGBA & 0xFF;
+    }
 
 
         public static BufferedImage  createBufferedImageObjFrom2dArray(int[][] the2dArray){
@@ -123,27 +145,40 @@ public class Main {
     }
 
 
-    public static int convertRGBAtoInt(int red, int green, int blue,int alpha){
-      return (alpha << 24) | (red << 16) | (green << 8) | blue;
+
+
+
+
+
+
+
+
+
+
+    public static void convertIntoGreyScale(int[][] the2dArray){
+        int blackIntNumber=convertRGBAtoInt(0,0,0,255);
+        int whiteIntNumber=convertRGBAtoInt(255,255,255,255);
+        int currentRedValue;
+        int currentGreenValue;
+        int currentBlueValue;
+        int currentAlphaValue;
+        for (int x = 0; x < the2dArray.length; x++) {
+            for (int y = 0; y <  the2dArray[0].length; y++) {
+                //Extract values from the pixel
+                currentAlphaValue=extractAlphaFromRGBAint(the2dArray[x][y]);
+                currentRedValue=extractRedFromRGBAint(the2dArray[x][y]);
+               currentGreenValue=extractGreenFromRGBAint(the2dArray[x][y]);
+               currentBlueValue=extractBlueFromRGBAint(the2dArray[x][y]);
+               //Formula with some constants to create a number from 0 to 255
+               int theFormula=(int) Math.round(0.2126 * currentRedValue + 0.7152 * currentGreenValue + 0.0722 * currentBlueValue);
+                //then you put the same value in rgb in red green and blue(its like picking the average but the weight depend on constant)
+                the2dArray[x][y]=convertRGBAtoInt(theFormula,theFormula,theFormula,currentAlphaValue);
+
+            }
+        }
+
+
     }
-
-
-    public static int extractAlphaFromRGBAint(int intOfRGBA){
-        return (intOfRGBA >> 24) & 0xFF;
-    }
-
-    public static int extractRedFromRGBAint(int intOfRGBA){
-     return (intOfRGBA >> 16) & 0xFF;
-    }
-
-    public static int extractGreenFromRGBAint(int intOfRGBA){
-        return (intOfRGBA >> 8) & 0xFF;
-    }
-
-    public static int extractBlueFromRGBAint(int intOfRGBA){
-        return intOfRGBA & 0xFF;
-    }
-
 
 
 }
