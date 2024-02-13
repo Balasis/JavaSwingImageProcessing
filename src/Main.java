@@ -157,8 +157,6 @@ public class Main {
 
 
     public static void convertIntoGreyScale(int[][] the2dArray){
-        int blackIntNumber=convertRGBAtoInt(0,0,0,255);
-        int whiteIntNumber=convertRGBAtoInt(255,255,255,255);
         int currentRedValue;
         int currentGreenValue;
         int currentBlueValue;
