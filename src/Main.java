@@ -5,17 +5,12 @@ import javax.imageio.ImageIO;
 
 public class Main {
     public static void main(String[] args) {
-        String imgPath = "resources/theImage.jpg";
+        String imgPath = "resources/theImagee.jpg";
         BufferedImage currentImg;
-        try {
+
+        do {
             currentImg = fetchImage(imgPath);
-
-        } catch (IOException e) {
-           ExceptionHandler.handleException(e);
-            //   e.printStackTrace();
-            return; // Exit the program if image loading fails
-        }
-
+        }while(currentImg==null);
 
         //Creating a 2d Array using BufferedImage dimensions
         int[][] currentImg2dArray = create2dArrayUsingBufferedImage(currentImg);
@@ -89,8 +84,13 @@ public class Main {
     // and ImageIO.read() is the tool you use to load the image data into that canvas
     // from an external source, like a file(myImgObj). Throws exception informs the compiler
     //that this method might return an exception(error) so it gets handled by the caller of the method
-    public static BufferedImage fetchImage(String path) throws IOException {
-        return ImageIO.read(new File(path));
+    public static BufferedImage fetchImage(String path){
+        try {
+            return ImageIO.read(new File(path));
+        } catch (IOException e) {
+            ExceptionHandler.handleExceptionCantReadPhoto(e);
+            return null;
+        }
     }
 
 
