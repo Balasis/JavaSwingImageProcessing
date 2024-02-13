@@ -11,7 +11,8 @@ public class Main {
             currentImg = fetchImage(imgPath);
 
         } catch (IOException e) {
-            e.printStackTrace();
+           ExceptionHandler.handleException(e);
+            //   e.printStackTrace();
             return; // Exit the program if image loading fails
         }
 
