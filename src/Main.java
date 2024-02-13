@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 public class Main {
     public static void main(String[] args) {
 
-        File inputFile = new File("resources/theImage.jpg");
+        File inputFile = new File("resourcesa/theImage.jpg");
         BufferedImage currentImg;
 
         do {
