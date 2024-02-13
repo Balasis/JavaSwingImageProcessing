@@ -1,15 +1,21 @@
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.InputStream;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 
 public class Main {
     public static void main(String[] args) {
-        String imgPath = "resourcess/theImage.jpg";
+
+        File inputFile = new File("resources/theImage.jpg");
         BufferedImage currentImg;
 
         do {
-            currentImg = fetchImage(imgPath);
+            currentImg = fetchImage(inputFile);
         }while(currentImg==null);
 
         //Creating a 2d Array using BufferedImage dimensions
@@ -84,15 +90,15 @@ public class Main {
     // and ImageIO.read() is the tool you use to load the image data into that canvas
     // from an external source, like a file(myImgObj). Throws exception informs the compiler
     //that this method might return an exception(error) so it gets handled by the caller of the method
-    public static BufferedImage fetchImage(String path){
+    public static BufferedImage fetchImage(File path) {
         try {
-            return ImageIO.read(new File(path));
+            InputStream inputStream = new FileInputStream(path);
+            return ImageIO.read(inputStream);
         } catch (IOException e) {
             ExceptionHandler.handleExceptionCantReadPhoto(e);
             return null;
         }
     }
-
 
 
 
@@ -138,7 +144,8 @@ public class Main {
 
     public static void exportImg(BufferedImage outputBufferedImage,File outputFile){
         try {
-            ImageIO.write(outputBufferedImage, "jpg", outputFile);
+            OutputStream outputStream = new FileOutputStream(outputFile);
+            ImageIO.write(outputBufferedImage, "jpg", outputStream);
             System.out.println("Image saved successfully.");
         } catch (IOException e) {
             System.err.println("Error saving image: " + e.getMessage());

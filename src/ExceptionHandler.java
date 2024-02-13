@@ -27,8 +27,14 @@ public class ExceptionHandler {
             myScanObj.nextLine();
         }
 
-    }
 
+
+
+
+    }
+    public static void wrongPath(FileNotFoundException e){
+        System.out.println("Please enter valid path");
+    }
 
 
 }
