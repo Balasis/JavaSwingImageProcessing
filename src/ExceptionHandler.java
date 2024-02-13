@@ -4,5 +4,5 @@ public class ExceptionHandler {
     public static void handleException(Exception e){
         logger.severe("Heres an exception fella : "+ e.getMessage());
     }
-
+//some comment
 }
