@@ -12,10 +12,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 
-public class testingUiApp {
+public class TestingUiApp {
     public static void main(String[] args) {
         //Display UI using swing. So far we just have a frame and a button and trying to understand functionality of it.
-        SwingUtilities.invokeLater(testingUiApp::createAndShowGUI);
+        SwingUtilities.invokeLater(TestingUiApp::createAndShowGUI);
 
     }
 
@@ -31,14 +31,9 @@ public class testingUiApp {
         // Add components
 
         JButton button = new JButton("Click me!");
-        button.addActionListener(new ActionListener() {
-            //Ok as far as I understand the actionPerformed is a standard method included in actionListener
-            //thats why Override is used here ; in order to override the method of the superclass that it derives
-            @Override
-           public void actionPerformed(ActionEvent e) {
-                System.out.println("just a message ");
-           }
-        });
+        //Ok as far as I understand the actionPerformed is a standard method included in actionListener
+//thats why Override is used here ; in order to override the method of the superclass that it derives
+        button.addActionListener(e -> System.out.println("just a message "));
 
 
 
@@ -56,14 +51,17 @@ public class testingUiApp {
                 //the result of showOpenDialog(frame) is an int number..which represents
                 //if action was approved , cancel , or error
                 BufferedImage currentImg=null;
-                do {
+
                 int result=fileChooserObj.showOpenDialog(frame);
-                if (result == JFileChooser.APPROVE_OPTION) {
+
+                if (result != JFileChooser.APPROVE_OPTION) {
+                     fileChooserObj.cancelSelection();
+                    }
+
+
                     File selectedFile = fileChooserObj.getSelectedFile();
                     File inputFile = new File(selectedFile.getAbsolutePath());
                     currentImg = fetchImage(inputFile);
-                    }
-               }while(currentImg==null);
 
 
 
