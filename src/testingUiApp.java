@@ -13,7 +13,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 
-public class Main {
+public class testingUiApp {
     public static void main(String[] args) {
         //Display UI using swing. So far we just have a frame and a button and trying to understand functionality of it.
         SwingUtilities.invokeLater(() -> {
@@ -85,7 +85,7 @@ public class Main {
                     BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(currentImg2dArray);
 
                     //Set path for the image to be saved as well as the name
-                    File outputFile = new File("resources/theImageOutput.jpg");
+                    File outputFile = new File("./theImageOutput.jpg");
 
                     //Export the img
                     exportImg(outputBufferedImage,outputFile);
