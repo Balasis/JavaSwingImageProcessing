@@ -1,3 +1,7 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
+
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -8,39 +12,98 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+
 public class Main {
     public static void main(String[] args) {
-
-        File inputFile = new File("resourcesa/theImage.jpg");
-        BufferedImage currentImg;
-
-        do {
-            currentImg = fetchImage(inputFile);
-        }while(currentImg==null);
-
-        //Creating a 2d Array using BufferedImage dimensions
-        int[][] currentImg2dArray = create2dArrayUsingBufferedImage(currentImg);
-
-        //Populate the currentImg2dArray with the corresponding RGB value of each pixel of currentImg
-        populate2dArrWithRGBFromTheBufferedImg(currentImg2dArray, currentImg);
-
-        // Turn the first "x":30 in our case rows rgb into black (0,0,0) (if rows exist)
-       // turnFirstTenRowsIntoBlack(currentImg2dArray, 130);
-
-        //Turn it to grayscale
-        convertIntoGreyScale(currentImg2dArray);
-
-
-        // Create new bufferedImage from the current processed 2d Array
-        BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(currentImg2dArray);
-
-        //Set path for the image to be saved as well as the name
-        File outputFile = new File("resources/theImageOutput.jpg");
-
-        //Export the img
-        exportImg(outputBufferedImage,outputFile);
+        //Display UI using swing. So far we just have a frame and a button and trying to understand functionality of it.
+        SwingUtilities.invokeLater(() -> {
+            createAndShowGUI();
+        });
 
     }
+
+
+
+    private static void createAndShowGUI() {
+        // Create and set up the window
+        JFrame frame = new JFrame("Image-Processing");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//it closes the application when window is closed
+
+        // Add components
+        /*
+        JButton button = new JButton("Click me!");
+        button.addActionListener(new ActionListener() {
+            //Ok as far as I understand the actionPerformed is a standard method included in actionListener
+            //thats why Override is used here ; in order to override the method of the superclass that it derives
+            @Override
+           public void actionPerformed(ActionEvent e) {
+                showMessage();
+           }
+        });
+*/
+
+
+        JButton browseButton=new JButton("Browse Image");
+        browseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //we create a JfileChooser
+
+                JFileChooser fileChooserObj=new JFileChooser();
+                //we set a title to the window
+                fileChooserObj.setDialogTitle("Choose an image");
+                //showOpenDialog is to open the option for the user to choose a file..the parameter it takes
+                //is in which parent window is to be displayed (in our case in the frame)
+                //the result of showOpenDialog(frame) is an int number..which represents
+                //if action was approved , cancel , or error
+                BufferedImage currentImg=null;
+                do {
+                int result=fileChooserObj.showOpenDialog(frame);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooserObj.getSelectedFile();
+                    File inputFile = new File(selectedFile.getAbsolutePath());
+                    currentImg = fetchImage(inputFile);
+                    }
+               }while(currentImg==null);
+
+
+
+                    //Creating a 2d Array using BufferedImage dimensions
+                    int[][] currentImg2dArray = create2dArrayUsingBufferedImage(currentImg);
+
+                    //Populate the currentImg2dArray with the corresponding RGB value of each pixel of currentImg
+                    populate2dArrWithRGBFromTheBufferedImg(currentImg2dArray, currentImg);
+
+                    // Turn the first "x":30 in our case rows rgb into black (0,0,0) (if rows exist)
+                    // turnFirstTenRowsIntoBlack(currentImg2dArray, 130);
+
+                    //Turn it to grayscale
+                    convertIntoGreyScale(currentImg2dArray);
+
+
+                    // Create new bufferedImage from the current processed 2d Array
+                    BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(currentImg2dArray);
+
+                    //Set path for the image to be saved as well as the name
+                    File outputFile = new File("resources/theImageOutput.jpg");
+
+                    //Export the img
+                    exportImg(outputBufferedImage,outputFile);
+
+
+
+            }
+        });
+
+
+        frame.getContentPane().add(browseButton);
+
+        // Display the window
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+
 
 
 
