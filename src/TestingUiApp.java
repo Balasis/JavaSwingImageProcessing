@@ -30,10 +30,10 @@ public class TestingUiApp {
         frame.setLayout(new FlowLayout());
         // Add components
 
-        JButton button = new JButton("Click me!");
+        JButton button = new JButton("Dummy button(ui test)");
         //Ok as far as I understand the actionPerformed is a standard method included in actionListener
 //thats why Override is used here ; in order to override the method of the superclass that it derives
-        button.addActionListener(e -> System.out.println("just a message "));
+        button.addActionListener(e -> System.out.println("test"));
 
 
 
@@ -62,9 +62,6 @@ public class TestingUiApp {
                     File selectedFile = fileChooserObj.getSelectedFile();
                     File inputFile = new File(selectedFile.getAbsolutePath());
                     currentImg = fetchImage(inputFile);
-
-
-
                     //Creating a 2d Array using BufferedImage dimensions
                     int[][] currentImg2dArray = create2dArrayUsingBufferedImage(currentImg);
 
