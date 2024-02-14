@@ -1,7 +1,7 @@
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,16 +9,13 @@ import java.io.OutputStream;
 import java.io.InputStream;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
 
 public class testingUiApp {
     public static void main(String[] args) {
         //Display UI using swing. So far we just have a frame and a button and trying to understand functionality of it.
-        SwingUtilities.invokeLater(() -> {
-            createAndShowGUI();
-        });
+        SwingUtilities.invokeLater(testingUiApp::createAndShowGUI);
 
     }
 
@@ -29,18 +26,20 @@ public class testingUiApp {
         JFrame frame = new JFrame("Image-Processing");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//it closes the application when window is closed
 
+        //redesign layout so it will accept both buttons otherwise it will just center them.
+        frame.setLayout(new FlowLayout());
         // Add components
-        /*
+
         JButton button = new JButton("Click me!");
         button.addActionListener(new ActionListener() {
             //Ok as far as I understand the actionPerformed is a standard method included in actionListener
             //thats why Override is used here ; in order to override the method of the superclass that it derives
             @Override
            public void actionPerformed(ActionEvent e) {
-                showMessage();
+                System.out.println("just a message ");
            }
         });
-*/
+
 
 
         JButton browseButton=new JButton("Browse Image");
@@ -95,7 +94,7 @@ public class testingUiApp {
             }
         });
 
-
+        frame.getContentPane().add(button);
         frame.getContentPane().add(browseButton);
 
         // Display the window
