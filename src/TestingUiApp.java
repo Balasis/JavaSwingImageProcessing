@@ -1,6 +1,4 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
@@ -14,10 +12,10 @@ import javax.imageio.ImageIO;
 
 public class TestingUiApp {
     public static void main(String[] args) {
-        //Display UI using swing. So far we just have a frame and a button and trying to understand functionality of it.
+        //Display UI using swing. So far we just have a frame and a button and trying to understand how to form the ui and add functionality .
         SwingUtilities.invokeLater(TestingUiApp::createAndShowGUI);
-
     }
+
 
 
 
@@ -26,68 +24,67 @@ public class TestingUiApp {
         JFrame frame = new JFrame("Image-Processing");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//it closes the application when window is closed
 
+
         //redesign layout so it will accept both buttons otherwise it will just center them.
         frame.setLayout(new FlowLayout());
         // Add components
 
         JButton button = new JButton("Dummy button(ui test)");
         //Ok as far as I understand the actionPerformed is a standard method included in actionListener
-//thats why Override is used here ; in order to override the method of the superclass that it derives
+        //that's why Override is used here ; in order to override the method of the superclass that it derives
         button.addActionListener(e -> System.out.println("test"));
 
 
 
         JButton browseButton=new JButton("Browse Image");
-        browseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //we create a JfileChooser
+        browseButton.addActionListener(e -> {
+            //we create a JfileChooser
+            JFileChooser fileChooserObj=new JFileChooser();
+            //we set a title to the window
+            fileChooserObj.setDialogTitle("Choose an image");
+            //showOpenDialog is to open the option for the user to choose a file... the parameter it takes
+            //is in which parent window is to be displayed (in our case in the frame)
+            //the result of showOpenDialog(frame) is an int number... which represents
+            //if action was approved , cancel , or error
+            BufferedImage currentImg=null;
 
-                JFileChooser fileChooserObj=new JFileChooser();
-                //we set a title to the window
-                fileChooserObj.setDialogTitle("Choose an image");
-                //showOpenDialog is to open the option for the user to choose a file..the parameter it takes
-                //is in which parent window is to be displayed (in our case in the frame)
-                //the result of showOpenDialog(frame) is an int number..which represents
-                //if action was approved , cancel , or error
-                BufferedImage currentImg=null;
+            int result=fileChooserObj.showOpenDialog(frame);
 
-                int result=fileChooserObj.showOpenDialog(frame);
-
-                if (result != JFileChooser.APPROVE_OPTION) {
-                     fileChooserObj.cancelSelection();
-                   return;
-                    }
+            if (result != JFileChooser.APPROVE_OPTION) {
+                 fileChooserObj.cancelSelection();
+               return;
+                }
 
 
-                    File selectedFile = fileChooserObj.getSelectedFile();
-                    File inputFile = new File(selectedFile.getAbsolutePath());
-                    currentImg = fetchImage(inputFile);
-                    //Creating a 2d Array using BufferedImage dimensions
-                    int[][] currentImg2dArray = create2dArrayUsingBufferedImage(currentImg);
+                File selectedFile = fileChooserObj.getSelectedFile();
+                File inputFile = new File(selectedFile.getAbsolutePath());
+                currentImg = fetchImage(inputFile);
 
-                    //Populate the currentImg2dArray with the corresponding RGB value of each pixel of currentImg
-                    populate2dArrWithRGBFromTheBufferedImg(currentImg2dArray, currentImg);
+                //Creating a 2d Array using BufferedImage dimensions
+            assert currentImg != null;
+            int[][] currentImg2dArray = create2dArrayUsingBufferedImage(currentImg);
 
-                    // Turn the first "x":30 in our case rows rgb into black (0,0,0) (if rows exist)
-                    // turnFirstTenRowsIntoBlack(currentImg2dArray, 130);
+                //Populate the currentImg2dArray with the corresponding RGB value of each pixel of currentImg
+                populate2dArrWithRGBFromTheBufferedImg(currentImg2dArray, currentImg);
 
-                    //Turn it to grayscale
-                    convertIntoGreyScale(currentImg2dArray);
+                // Turn the first "x":30 in our case rows rgb into black (0,0,0) (if rows exist)
+                // turnFirstTenRowsIntoBlack(currentImg2dArray, 130);
 
-
-                    // Create new bufferedImage from the current processed 2d Array
-                    BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(currentImg2dArray);
-
-                    //Set path for the image to be saved as well as the name
-                    File outputFile = new File("./theImageOutput.jpg");
-
-                    //Export the img
-                    exportImg(outputBufferedImage,outputFile);
+                //Turn it to grayscale
+                convertIntoGreyScale(currentImg2dArray);
 
 
+                // Create new bufferedImage from the current processed 2d Array
+                BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(currentImg2dArray);
 
-            }
+                //Set path for the image to be saved as well as the name
+                File outputFile = new File("./theImageOutput.jpg");
+
+                //Export the img
+                exportImg(outputBufferedImage,outputFile);
+
+
+
         });
 
         frame.getContentPane().add(button);
