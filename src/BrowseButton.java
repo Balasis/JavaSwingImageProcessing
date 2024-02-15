@@ -7,17 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-//class is package-private visibility due to not declaring them public or protected or private...
-class SimpleConsoleTextButton extends JPanel {
-    public SimpleConsoleTextButton(String buttonName,String textInside){
-       JButton button = new JButton(buttonName);
-       //Ok as far as I understand the actionPerformed is a standard method included in actionListener
-       //that's why Override is used here ; in order to override the method of the superclass that it derives
-       button.addActionListener(e -> System.out.println(textInside));
-       add(button);//it adds it to SimpleConsoleTextButton
-   }
 
-}
 
 
 
@@ -25,7 +15,7 @@ class SimpleConsoleTextButton extends JPanel {
 
 class BrowseButton extends JPanel{
     private   int[][] currentImg2dArray;
-    public BrowseButton(JFrame frame){
+    public BrowseButton(JFrame frame,JButton activateOne){
         JButton browseButton=new JButton("Browse Image");
 
 
@@ -44,6 +34,7 @@ class BrowseButton extends JPanel{
 
             if (result != JFileChooser.APPROVE_OPTION) {
                 fileChooserObj.cancelSelection();
+                activateOne.setEnabled(getImageFile() != null);
                 return;
             }
             File selectedFile = fileChooserObj.getSelectedFile();
@@ -55,6 +46,7 @@ class BrowseButton extends JPanel{
 
             //Populate the currentImg2dArray with the corresponding RGB value of each pixel of currentImg
             populate2dArrWithRGBFromTheBufferedImg(currentImg2dArray, currentImg);
+            activateOne.setEnabled(getImageFile() != null);
         });
 
 
@@ -120,6 +112,16 @@ class BrowseButton extends JPanel{
 
 
 
+/*
 
+//class is package-private visibility due to not declaring them public or protected or private...
+class SimpleConsoleTextButton extends JPanel {
+    public SimpleConsoleTextButton(String buttonName,String textInside){
+        JButton button = new JButton(buttonName);
+        //Ok as far as I understand the actionPerformed is a standard method included in actionListener
+        //that's why Override is used here ; in order to override the method of the superclass that it derives
+        button.addActionListener(e -> System.out.println(textInside));
+        add(button);//it adds it to SimpleConsoleTextButton
+    }
 
-
+}*/

@@ -38,12 +38,23 @@ public class TestingUiApp {
        frame.setResizable(false);
 
         // Add components
-        //goes to the ConvertImageButtonsClass and create an instance of
-        SimpleConsoleTextButton button=new SimpleConsoleTextButton("ButtonTest","SomeText");
-        //browses the image file(
-        BrowseButton browseButton=new BrowseButton(frame);
 
+        /*            Test button no longer needed... will be deleted soon.
+        //goes to the ConvertImageButtonsClass and create an instance of
+        SimpleConsoleTextButton button=new SimpleConsoleTextButton("ButtonTest","SomeText");*/
+
+        //OK YES it's really bad..but I cant find any other method so far.
+        //I create the reference here of the greyScale and pass it inside browseButton so it will activate
+        //the button at the listener of it when it receives not null.
         JButton greyScale=new JButton("GreyScale");
+
+
+
+        //browses the image file(
+        BrowseButton browseButton=new BrowseButton(frame,greyScale);
+
+        //and sadly I lose the opportunity to make the whole button into one method below because declaration and
+        //listener has to be split...
         greyScale.addActionListener(e->{
             convertIntoGreyScale(browseButton.getImageFile());
             //Turn it to grayscale
@@ -54,6 +65,7 @@ public class TestingUiApp {
             //Export the img
             exportImg(outputBufferedImage,outputFile);
         });
+
 
 
 
@@ -79,7 +91,9 @@ public class TestingUiApp {
 
         });*/
 
-        frame.getContentPane().add(button);
+       // frame.getContentPane().add(button);
+
+
         frame.getContentPane().add(browseButton);
         frame.getContentPane().add(greyScale);
 
