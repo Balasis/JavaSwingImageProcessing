@@ -56,6 +56,7 @@ public class TestingUiApp {
 
                 if (result != JFileChooser.APPROVE_OPTION) {
                      fileChooserObj.cancelSelection();
+                   return;
                     }
 
 
