@@ -1,10 +1,8 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.io.InputStream;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -20,52 +18,46 @@ public class TestingUiApp {
 
 
     private static void createAndShowGUI() {
-        // Create and set up the window
-        JFrame frame = new JFrame("Image-Processing");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//it closes the application when window is closed
+        //all of the buttons are constructed into convertImageButtons
+        // and classes extend Into extends JPanel (JPanel exists in Swing library so you have them access through that here)
 
+
+        // Create the window
+        JFrame frame = new JFrame("Image-Processing");
+
+        //it closes the application when window is closed
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //redesign layout so it will accept both buttons otherwise it will just center them.
         frame.setLayout(new FlowLayout());
+
+        //set Dimensions
+        frame.setSize(700, 400);
+
+        //disable resize
+       frame.setResizable(false);
+
         // Add components
+        //goes to the ConvertImageButtonsClass and create an instance of
+        SimpleConsoleTextButton button=new SimpleConsoleTextButton("ButtonTest","SomeText");
+        //browses the image file(
+        BrowseButton browseButton=new BrowseButton(frame);
 
-        JButton button = new JButton("Dummy button(ui test)");
-        //Ok as far as I understand the actionPerformed is a standard method included in actionListener
-        //that's why Override is used here ; in order to override the method of the superclass that it derives
-        button.addActionListener(e -> System.out.println("test"));
-
-
-
-        JButton browseButton=new JButton("Browse Image");
-        browseButton.addActionListener(e -> {
-            //we create a JfileChooser
-            JFileChooser fileChooserObj=new JFileChooser();
-            //we set a title to the window
-            fileChooserObj.setDialogTitle("Choose an image");
-            //showOpenDialog is to open the option for the user to choose a file... the parameter it takes
-            //is in which parent window is to be displayed (in our case in the frame)
-            //the result of showOpenDialog(frame) is an int number... which represents
-            //if action was approved , cancel , or error
-            BufferedImage currentImg=null;
-
-            int result=fileChooserObj.showOpenDialog(frame);
-
-            if (result != JFileChooser.APPROVE_OPTION) {
-                 fileChooserObj.cancelSelection();
-               return;
-                }
+        JButton greyScale=new JButton("GreyScale");
+        greyScale.addActionListener(e->{
+            convertIntoGreyScale(browseButton.getImageFile());
+            //Turn it to grayscale
+            // Create new bufferedImage from the current processed 2d Array
+            BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(browseButton.getImageFile());
+            //Set path for the image to be saved as well as the name
+            File outputFile = new File("./theImageOutput.jpg");
+            //Export the img
+            exportImg(outputBufferedImage,outputFile);
+        });
 
 
-                File selectedFile = fileChooserObj.getSelectedFile();
-                File inputFile = new File(selectedFile.getAbsolutePath());
-                currentImg = fetchImage(inputFile);
 
-                //Creating a 2d Array using BufferedImage dimensions
-            assert currentImg != null;
-            int[][] currentImg2dArray = create2dArrayUsingBufferedImage(currentImg);
-
-                //Populate the currentImg2dArray with the corresponding RGB value of each pixel of currentImg
-                populate2dArrWithRGBFromTheBufferedImg(currentImg2dArray, currentImg);
+/*
 
                 // Turn the first "x":30 in our case rows rgb into black (0,0,0) (if rows exist)
                 // turnFirstTenRowsIntoBlack(currentImg2dArray, 130);
@@ -85,13 +77,18 @@ public class TestingUiApp {
 
 
 
-        });
+        });*/
 
         frame.getContentPane().add(button);
         frame.getContentPane().add(browseButton);
+        frame.getContentPane().add(greyScale);
+
+        // I disable the button if there is null to browse Image
+        //OK after a bit of search here's the CATCH ON THIS
+        greyScale.setEnabled(browseButton.getImageFile() != null); // Disable the button
 
         // Display the window
-        frame.pack();
+    //  frame.pack();//seems like pack was affecting the size
         frame.setVisible(true);
     }
 
@@ -141,42 +138,15 @@ public class TestingUiApp {
 
 
 
-    //BufferedImage(return type) is the canvas you work with once the image data is in memory,
-    // and ImageIO.read() is the tool you use to load the image data into that canvas
-    // from an external source, like a file(myImgObj). Throws exception informs the compiler
-    //that this method might return an exception(error) so it gets handled by the caller of the method
-    public static BufferedImage fetchImage(File path) {
-        try {
-            InputStream inputStream = new FileInputStream(path);
-            return ImageIO.read(inputStream);
-        } catch (IOException e) {
-            ExceptionHandler.handleExceptionCantReadPhoto(e);
-            return null;
-        }
-    }
 
 
 
 
-    // Create a 2d Array | In our case the height(px) is the columns  and the rows are the  width(px).
-    public static int[][] create2dArrayUsingBufferedImage(BufferedImage bufferedImg) {
-        return new int[bufferedImg.getWidth()][bufferedImg.getHeight()];
-    }
 
 
 
 
-    //By Using getRGB(x,y) we get the rgb value of its pixel (which is an int number) and we place it inside each
-    //the corresponding array element that represents this pixel in the2dArray.
-    //Furthmore, there is no dimension/indexDifferences check between the2dArray and the bufferedImg
-    //Since the2dArray was made out of the dimensions of theBufferedImage.
-    public static void populate2dArrWithRGBFromTheBufferedImg(int[][] the2dArray, BufferedImage theBufferedImage) {
-        for (int x = 0; x < the2dArray.length; x++) {
-            for (int y = 0; y < the2dArray[0].length; y++) {
-                the2dArray[x][y] = theBufferedImage.getRGB(x, y);
-            }
-        }
-    }
+
 
 
 
@@ -241,7 +211,33 @@ public class TestingUiApp {
 
     }
 
+    public static void convertIntoNegative(int[][] the2dArray){
+        int currentRedValue;
+        int currentGreenValue;
+        int currentBlueValue;
+        int currentAlphaValue;
+        for (int x = 0; x < the2dArray.length; x++) {
+            for (int y = 0; y <  the2dArray[0].length; y++) {
+                //Extract values from the pixel
+                currentAlphaValue=extractAlphaFromRGBAint(the2dArray[x][y]);
+                currentRedValue=extractRedFromRGBAint(the2dArray[x][y]);
+                currentGreenValue=extractGreenFromRGBAint(the2dArray[x][y]);
+                currentBlueValue=extractBlueFromRGBAint(the2dArray[x][y]);
 
+
+                //To convert into negative we just do maximum value (255 ) minus the current;
+                int negativeRed = 255 - currentRedValue;
+                int negativeGreen = 255 - currentGreenValue;
+                int negativeBlue = 255 - currentBlueValue;
+
+                //then we put back the values into the pixel
+                the2dArray[x][y]=convertRGBAtoInt(negativeRed,negativeGreen,negativeBlue,currentAlphaValue);
+
+            }
+        }
+
+
+    }
 
 
 
