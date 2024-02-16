@@ -119,6 +119,8 @@ class BrowseButton extends JPanel{
     public static BufferedImage fetchImage(File path) {
         try {
             InputStream inputStream = new FileInputStream(path);
+            //seems like ImageIO.read(inputStream) doesn't throw any error...just a null if it cant read it
+            //therefore I cant catch an exception for it to send it to handler
             return ImageIO.read(inputStream);
         } catch (IOException e) {
             ExceptionHandler.handleExceptionCantReadPhoto(e);

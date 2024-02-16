@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.nio.file.AccessDeniedException;
 import java.util.logging.Logger;
@@ -16,17 +17,22 @@ public class ExceptionHandler {
         if (e instanceof FileNotFoundException) {
             // Handle file not found exception
             System.err.println("File not found: " + e.getMessage());
-            myScanObj.nextLine();
+      JOptionPane.showMessageDialog(null, "File not found", "Invalid File", JOptionPane.INFORMATION_MESSAGE);
+
         } else if (e instanceof AccessDeniedException) {
             // Handle access denied exception
             System.err.println("Access denied: " + e.getMessage());
-            myScanObj.nextLine();
+            JOptionPane.showMessageDialog(null, "Access denied:", "Invalid File", JOptionPane.INFORMATION_MESSAGE);
+
         } else {
             // Handle other types of IOExceptions
             System.err.println(e.getMessage());
-            myScanObj.nextLine();
+            JOptionPane.showMessageDialog(null, "Please enter a valid Image File", "Invalid File", JOptionPane.INFORMATION_MESSAGE);
+
         }
 
     }
+
+
 
 }
