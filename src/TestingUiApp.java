@@ -50,7 +50,8 @@ public class TestingUiApp {
         //First I add all the processing buttons into an array. Reason is that we will use later the array to
         //activate these buttons once the browse and export path are chosen...(browserNotNull and exportNotNull turn true)
         JButton[] processButtons={
-                new JButton("GreyScale")
+                new JButton("GreyScale"),
+                new JButton("Negative")
         };
 
 
@@ -77,8 +78,20 @@ public class TestingUiApp {
             exportImg(outputBufferedImage,outputFile);
         });
 
+        //Negative Listener
+        processButtons[1].addActionListener(e->{
+            convertIntoNegative(browseButton.getImageFile());
+            //Turn it to grayscale
+            // Create new bufferedImage from the current processed 2d Array
+            BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(browseButton.getImageFile());
+            //Set path for the image to be saved as well as the name
+            String pathChosenToExport=  exportPathButton.exportPathSelected() + "/";
+            String browseringFileName=browseButton.getTheNameOfBrowseFileExtensionIncluded();
 
-
+            File outputFile = new File(pathChosenToExport+browseringFileName);
+            //Export the img
+            exportImg(outputBufferedImage,outputFile);
+        });
 
 
 
