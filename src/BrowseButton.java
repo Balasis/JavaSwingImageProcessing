@@ -9,10 +9,9 @@ import java.io.InputStream;
 
 
 
-
 class BrowseButton extends JPanel{
     private   int[][] currentImg2dArray;
-    public BrowseButton(JFrame frame,boolean browserNotNull,boolean exportNotNull,JButton[] processButtons){
+    public BrowseButton(JFrame frame,JButton[] processButtons){
         JButton browseButton=new JButton("Browse Image");
 
 
@@ -31,7 +30,8 @@ class BrowseButton extends JPanel{
 
             if (result != JFileChooser.APPROVE_OPTION) {
                 fileChooserObj.cancelSelection();
-                TestingUiApp.enableOrDisableProcessButtons(browserNotNull,exportNotNull,processButtons);
+                TestingUiApp.browserNotNull=false;
+                TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,TestingUiApp.exportNotNull,processButtons);
                 return;
             }
 
@@ -44,7 +44,8 @@ class BrowseButton extends JPanel{
 
             //Populate the currentImg2dArray with the corresponding RGB value of each pixel of currentImg
             populate2dArrWithRGBFromTheBufferedImg(currentImg2dArray, currentImg);
-            TestingUiApp.enableOrDisableProcessButtons(browserNotNull,exportNotNull,processButtons);
+            TestingUiApp.browserNotNull=true;
+            TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,TestingUiApp.exportNotNull,processButtons);
         });
 
 
@@ -55,11 +56,6 @@ class BrowseButton extends JPanel{
     public  int[][] getImageFile(){
         return currentImg2dArray;
     }
-
-
-
-
-
 
 
 
@@ -77,10 +73,6 @@ class BrowseButton extends JPanel{
     }
 
 
-
-
-
-
     //BufferedImage(return type) is the canvas you work with once the image data is in memory,
     // and ImageIO.read() is the tool you use to load the image data into that canvas
     // from an external source, like a file(myImgObj). Throws exception informs the compiler
@@ -96,35 +88,10 @@ class BrowseButton extends JPanel{
     }
 
 
-
     // Create a 2d Array | In our case the height(px) is the columns  and the rows are the  width(px).
     public static int[][] create2dArrayUsingBufferedImage(BufferedImage bufferedImg) {
         return new int[bufferedImg.getWidth()][bufferedImg.getHeight()];
     }
 
 
-
-
-
-
 }
-
-
-
-
-
-
-
-/*
-
-//class is package-private visibility due to not declaring them public or protected or private...
-class SimpleConsoleTextButton extends JPanel {
-    public SimpleConsoleTextButton(String buttonName,String textInside){
-        JButton button = new JButton(buttonName);
-        //Ok as far as I understand the actionPerformed is a standard method included in actionListener
-        //that's why Override is used here ; in order to override the method of the superclass that it derives
-        button.addActionListener(e -> System.out.println(textInside));
-        add(button);//it adds it to SimpleConsoleTextButton
-    }
-
-}*/

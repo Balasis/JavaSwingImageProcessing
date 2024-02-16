@@ -9,6 +9,8 @@ import javax.imageio.ImageIO;
 
 
 public class TestingUiApp {
+    static boolean browserNotNull=false;
+    static boolean exportNotNull=false;
     public static void main(String[] args) {
         //Display UI using swing. So far we just have a frame and a button and trying to understand how to form the ui and add functionality .
         SwingUtilities.invokeLater(TestingUiApp::createAndShowGUI);
@@ -38,12 +40,7 @@ public class TestingUiApp {
        frame.setResizable(false);
 
         // Add components
-
-        /*            Test button no longer needed... will be deleted soon.
-        //goes to the ConvertImageButtonsClass and create an instance of
-        SimpleConsoleTextButton button=new SimpleConsoleTextButton("ButtonTest","SomeText");*/
-
-        //The idea is to create an array with Jbutton references that I want to enable if browseButton.getImageFile() is not null
+        //The idea is to create an array with JButton references that I want to enable if browseButton.getImageFile() is not null
         //and there is also an external path(not null).
 
         //I pass this array to browse button listener and to external path button listener so every time it checks and when
@@ -54,24 +51,13 @@ public class TestingUiApp {
                 new JButton("GreyScale")
         };
 
-        //These two pass as parameters to the corresponding function (browser to browser and export to export method) and change to true if not null
-        //Also will pass as parameters to the function that will pass to both functions so they get activate and deactivate the process Buttons array.
-        boolean browserNotNull=false;
-        boolean exportNotNull=false;
-
-
-        //browses the image file,activates and disactivates the buttons that process the image
+        //browses the image file,activates and Disactivates the buttons that process the image
         //You can view it in the BrowseButton.java , uses extend JPanel so we can use it here through Swing(since JPanel is superclass of swing)
-        BrowseButton browseButton=new BrowseButton(frame,browserNotNull,exportNotNull,processButtons);
+        BrowseButton browseButton=new BrowseButton(frame,processButtons);
+
+
         //ExportButton
-        ExportPathButton exportPathButton=new ExportPathButton(frame,browserNotNull,exportNotNull,processButtons);
-
-
-        browserNotNull=(browseButton.getImageFile()!=null);
-        exportNotNull=(exportPathButton.isExportPathSelected());
-
-
-
+        ExportPathButton exportPathButton=new ExportPathButton(frame,processButtons);
 
 
         //GreyScale Listener
@@ -86,32 +72,6 @@ public class TestingUiApp {
             exportImg(outputBufferedImage,outputFile);
         });
 
-
-
-
-/*
-
-                // Turn the first "x":30 in our case rows rgb into black (0,0,0) (if rows exist)
-                // turnFirstTenRowsIntoBlack(currentImg2dArray, 130);
-
-                //Turn it to grayscale
-                convertIntoGreyScale(currentImg2dArray);
-
-
-                // Create new bufferedImage from the current processed 2d Array
-                BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(currentImg2dArray);
-
-                //Set path for the image to be saved as well as the name
-                File outputFile = new File("./theImageOutput.jpg");
-
-                //Export the img
-                exportImg(outputBufferedImage,outputFile);
-
-
-
-        });*/
-
-       // frame.getContentPane().add(button);
 
 
         frame.getContentPane().add(browseButton);
