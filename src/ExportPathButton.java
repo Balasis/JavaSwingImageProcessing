@@ -1,12 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
 
+
+//Constructor of export button. Also, a public method to extract the export path to main
 class ExportPathButton extends JPanel{
+    //variable accessible to main through exportPathSelected below
     private  String exportPath;
     public ExportPathButton(JFrame frame,JButton[] processButtons){
+        //Propably we should have renamed the constructor into exportPanel. Anyway we create a button and add listener
+        //to pop up select window , a non-editable textfield to view the path chosen and a label over the textField
+        //that says Export:
+
 
         JButton  exportPathButton=new JButton("...");
-        //setting characters... I tried to change just the width at the start but wouldn't make much sense anyway...(didn't work)
+        //sets char numbers to be viewed..(biggest the number the biggest the width of the textfield)
         JTextField pathTextField = new JTextField(50);
 
         pathTextField.setEditable(false);
@@ -17,8 +24,12 @@ class ExportPathButton extends JPanel{
             JFileChooser fileChooserObj=new JFileChooser();
             //we set a title to the window
             fileChooserObj.setDialogTitle("Choose ExportPath");
+            //we make the file chooser to select directories only since we need the path
             fileChooserObj.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            //showOpenDialog accept as parameter the parent frame (the one replaced to view the select window)
+            //and returns an int number depending of what the user did...
             int result=fileChooserObj.showOpenDialog(frame);
+            //here we check if user canceled and we restore
             if (result != JFileChooser.APPROVE_OPTION) {
                 fileChooserObj.cancelSelection();
                 TestingUiApp.exportNotNull=false;

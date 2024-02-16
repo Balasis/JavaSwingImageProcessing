@@ -3,7 +3,14 @@ import java.io.FileNotFoundException;
 import java.nio.file.AccessDeniedException;
 import java.util.logging.Logger;
 import java.util.Scanner;
+
+//experimental state...its working if the path is wrong at the fetch image (in browseButton) but it cant really be wrong since it
+//is chosen by ui selection. Moreover, fetchImage method doesn't throw an Exception error if image.io.read() cant read the file , instead it returns
+//a null value. As a result I cant redirect it here to be handled.
+//In other words the current ExceptionHandler handles absolutely nothing.
 public class ExceptionHandler {
+
+
 
     private static final Logger logger=Logger.getLogger(ExceptionHandler.class.getName());
     public static void handleException(Exception e){

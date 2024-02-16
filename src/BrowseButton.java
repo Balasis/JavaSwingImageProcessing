@@ -37,40 +37,48 @@ class BrowseButton extends JPanel{
 
             int result=fileChooserObj.showOpenDialog(frame);
 
-
+            //we check if user canceled and if he did recheck if still valid path to enable or disable buttons
             if (result != JFileChooser.APPROVE_OPTION) {
                 fileChooserObj.cancelSelection();
-                TestingUiApp.browserNotNull=false;
-                pathTextField.setText(null);
                 TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,TestingUiApp.exportNotNull,processButtons);
                 return;
             }
 
-
-
-
+            //getting the name and also put the chosen file into File object for further processing
+            //the getTheNameOfBrowseringFile is being extracted  by the output methods using
+            // getTheNameOfBrowseFileExtensionIncluded() method (look below for it)
             File selectedFile = fileChooserObj.getSelectedFile();
             getTheNameOfBrowseringFile=fileChooserObj.getSelectedFile().getName();
             File inputFile = new File(selectedFile.getAbsolutePath());
 
+            //fetch the image...it gets the File object and outputs a Buffered image. (Created by using image.io.read())
+            //HERES the issue...if image.IO.read() cant read the file chosen it will return null and not an error so I can't
+            //redirect an exception in the exception handler.java.
             currentImg = fetchImage(inputFile);
+
+            // Therefore I just use an if:
             if (currentImg==null){
+                //resetting everything...
                 fileChooserObj.cancelSelection();
                 TestingUiApp.browserNotNull=false;
-                pathTextField.setText(null);
+              pathTextField.setText(null);
                 TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,TestingUiApp.exportNotNull,processButtons);
+                //pop up window..to come to this point it means that the user has chosen a file but not one that could be read from Image.IO.read
                 JOptionPane.showMessageDialog(null, "Please enter an Image File", "Invalid File", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
+            //Set path string into the textField
             pathTextField.setText(selectedFile.getAbsolutePath());
 
             //Creating a 2d Array using BufferedImage dimensions
-            assert currentImg != null;
+            assert currentImg != null;//assert will be deleted soon... I just have it for educational reasons here...
             currentImg2dArray = create2dArrayUsingBufferedImage(currentImg);
 
             //Populate the currentImg2dArray with the corresponding RGB value of each pixel of currentImg
             populate2dArrWithRGBFromTheBufferedImg(currentImg2dArray, currentImg);
+
+            //TURNS one of the two variabled needed true to enable the process buttons(rotate ,greyScale e.t.c)
             TestingUiApp.browserNotNull=true;
             TestingUiApp.enableOrDisableProcessButtons(true,TestingUiApp.exportNotNull,processButtons);
         });
@@ -89,11 +97,12 @@ class BrowseButton extends JPanel{
 
     }
 
-
+//process methods get the image obj from this method:
     public  int[][] getImageFile(){
         return currentImg2dArray;
     }
 
+// and use this to get the name and extension so they can export it.
     public String getTheNameOfBrowseFileExtensionIncluded(){
         return getTheNameOfBrowseringFile;
     }

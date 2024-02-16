@@ -196,6 +196,17 @@ public class TestingUiApp {
 
 
 
+
+
+
+
+
+
+
+
+
+    //I use this inside the listeners of  the browse and export buttons so each time I check if both are not null
+    //the validation of them is done inside their listeners so if they are not null they are valid paths/files.
     public static void enableOrDisableProcessButtons(boolean browserNotNull ,boolean exportNotNull,JButton[]  processButtons){
        if (browserNotNull && exportNotNull){
            for (JButton processButton : processButtons) {
@@ -212,6 +223,10 @@ public class TestingUiApp {
 
 
 
+
+
+
+    //=============common Methods that all proccessing methods require, FROM RGBA to int and back=======//
     public static int convertRGBAtoInt(int red, int green, int blue,int alpha){
         return (alpha << 24) | (red << 16) | (green << 8) | blue;
     }
@@ -234,6 +249,20 @@ public class TestingUiApp {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+        //======Following 2 methods are to convert the 2d array into BufferedImage obg and then Export.All processing buttons have these two===//
+
         public static BufferedImage  createBufferedImageObjFrom2dArray(int[][] the2dArray){
             BufferedImage outputBufferedImage = new BufferedImage(the2dArray.length, the2dArray[0].length, BufferedImage.TYPE_INT_RGB);
 
@@ -244,22 +273,6 @@ public class TestingUiApp {
             }
             return outputBufferedImage;
         }
-
-
-
-
-
-
-    public static void turnFirstTenRowsIntoBlack(int[][] the2dArray, int rowsToBlacken) {
-        int minNumberOfRows = Math.min(rowsToBlacken, the2dArray[0].length);
-        for (int x = 0; x < the2dArray.length; x++) {
-            for (int y = 0; y < minNumberOfRows; y++) {
-                the2dArray[x][y] = -16777216; // Black color
-            }
-        }
-    }
-
-
 
 
     public static void exportImg(BufferedImage outputBufferedImage,File outputFile){
@@ -281,6 +294,9 @@ public class TestingUiApp {
 
 
 
+
+
+        //=============All the following are proccessing methods.(Change the 2d array to form the desired result)================//
 
 
 
