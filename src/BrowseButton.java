@@ -10,12 +10,9 @@ import java.io.InputStream;
 
 
 
-
-
-
 class BrowseButton extends JPanel{
     private   int[][] currentImg2dArray;
-    public BrowseButton(JFrame frame,JButton activateOne){
+    public BrowseButton(JFrame frame,boolean browserNotNull,boolean exportNotNull,JButton[] processButtons){
         JButton browseButton=new JButton("Browse Image");
 
 
@@ -34,9 +31,10 @@ class BrowseButton extends JPanel{
 
             if (result != JFileChooser.APPROVE_OPTION) {
                 fileChooserObj.cancelSelection();
-                activateOne.setEnabled(getImageFile() != null);
+                TestingUiApp.enableOrDisableProcessButtons(browserNotNull,exportNotNull,processButtons);
                 return;
             }
+
             File selectedFile = fileChooserObj.getSelectedFile();
             File inputFile = new File(selectedFile.getAbsolutePath());
             currentImg = fetchImage(inputFile);
@@ -46,7 +44,7 @@ class BrowseButton extends JPanel{
 
             //Populate the currentImg2dArray with the corresponding RGB value of each pixel of currentImg
             populate2dArrWithRGBFromTheBufferedImg(currentImg2dArray, currentImg);
-            activateOne.setEnabled(getImageFile() != null);
+            TestingUiApp.enableOrDisableProcessButtons(browserNotNull,exportNotNull,processButtons);
         });
 
 
@@ -57,6 +55,11 @@ class BrowseButton extends JPanel{
     public  int[][] getImageFile(){
         return currentImg2dArray;
     }
+
+
+
+
+
 
 
 

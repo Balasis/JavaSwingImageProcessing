@@ -43,19 +43,39 @@ public class TestingUiApp {
         //goes to the ConvertImageButtonsClass and create an instance of
         SimpleConsoleTextButton button=new SimpleConsoleTextButton("ButtonTest","SomeText");*/
 
-        //OK YES it's really bad..but I cant find any other method so far.
-        //I create the reference here of the greyScale and pass it inside browseButton so it will activate
-        //the button at the listener of it when it receives not null.
-        JButton greyScale=new JButton("GreyScale");
+        //The idea is to create an array with Jbutton references that I want to enable if browseButton.getImageFile() is not null
+        //and there is also an external path(not null).
+
+        //I pass this array to browse button listener and to external path button listener so every time it checks and when
+        //both are not null they can activate the buttons in the array.
+
+
+        JButton[] processButtons={
+                new JButton("GreyScale")
+        };
+
+        //These two pass as parameters to the corresponding function (browser to browser and export to export method) and change to true if not null
+        //Also will pass as parameters to the function that will pass to both functions so they get activate and deactivate the process Buttons array.
+        boolean browserNotNull=false;
+        boolean exportNotNull=false;
+
+
+        //browses the image file,activates and disactivates the buttons that process the image
+        //You can view it in the BrowseButton.java , uses extend JPanel so we can use it here through Swing(since JPanel is superclass of swing)
+        BrowseButton browseButton=new BrowseButton(frame,browserNotNull,exportNotNull,processButtons);
+        //ExportButton
+        ExportPathButton exportPathButton=new ExportPathButton(frame,browserNotNull,exportNotNull,processButtons);
+
+
+        browserNotNull=(browseButton.getImageFile()!=null);
+        exportNotNull=(exportPathButton.isExportPathSelected());
 
 
 
-        //browses the image file(
-        BrowseButton browseButton=new BrowseButton(frame,greyScale);
 
-        //and sadly I lose the opportunity to make the whole button into one method below because declaration and
-        //listener has to be split...
-        greyScale.addActionListener(e->{
+
+        //GreyScale Listener
+        processButtons[0].addActionListener(e->{
             convertIntoGreyScale(browseButton.getImageFile());
             //Turn it to grayscale
             // Create new bufferedImage from the current processed 2d Array
@@ -95,11 +115,14 @@ public class TestingUiApp {
 
 
         frame.getContentPane().add(browseButton);
-        frame.getContentPane().add(greyScale);
+
+
+        frame.getContentPane().add( processButtons[0]);
+        frame.getContentPane().add(exportPathButton);
 
         // I disable the button if there is null to browse Image
         //OK after a bit of search here's the CATCH ON THIS
-        greyScale.setEnabled(browseButton.getImageFile() != null); // Disable the button
+        processButtons[0].setEnabled(browseButton.getImageFile() != null); // Disable the button
 
         // Display the window
     //  frame.pack();//seems like pack was affecting the size
@@ -111,6 +134,20 @@ public class TestingUiApp {
 
 
 
+
+
+    public static void enableOrDisableProcessButtons(boolean browserNotNull ,boolean exportNotNull,JButton[]  processButtons){
+       if (browserNotNull && exportNotNull){
+           for (JButton processButton : processButtons) {
+               processButton.setEnabled(true);
+           }
+       }else{
+           for (JButton processButton : processButtons) {
+               processButton.setEnabled(false);
+           }
+       }
+
+    }
 
 
 
@@ -147,22 +184,6 @@ public class TestingUiApp {
             }
             return outputBufferedImage;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
