@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,7 +13,13 @@ import java.io.InputStream;
 class BrowseButton extends JPanel{
     private   int[][] currentImg2dArray;
     public BrowseButton(JFrame frame,JButton[] processButtons){
-        JButton browseButton=new JButton("Browse Image");
+        JButton browseButton=new JButton("...");
+
+        JTextField pathTextField = new JTextField(20);
+        pathTextField.setEditable(false);
+
+        JLabel browseLabel = new JLabel("Browse:");
+
 
 
         browseButton.addActionListener(e -> {
@@ -31,12 +38,14 @@ class BrowseButton extends JPanel{
             if (result != JFileChooser.APPROVE_OPTION) {
                 fileChooserObj.cancelSelection();
                 TestingUiApp.browserNotNull=false;
+                pathTextField.setText(null);
                 TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,TestingUiApp.exportNotNull,processButtons);
                 return;
             }
 
             File selectedFile = fileChooserObj.getSelectedFile();
             File inputFile = new File(selectedFile.getAbsolutePath());
+            pathTextField.setText(selectedFile.getAbsolutePath());
             currentImg = fetchImage(inputFile);
             //Creating a 2d Array using BufferedImage dimensions
             assert currentImg != null;
@@ -49,7 +58,17 @@ class BrowseButton extends JPanel{
         });
 
 
-        add(browseButton);//add it to the panel
+        // Create a panel to hold label and text field horizontally
+        JPanel pathPanel = new JPanel();
+        pathPanel.setLayout(new BorderLayout());
+        pathPanel.add(browseLabel, BorderLayout.NORTH);
+        pathPanel.add(pathTextField, BorderLayout.CENTER);
+        pathPanel.add(browseButton, BorderLayout.EAST);
+
+        add(pathPanel);
+
+
+
     }
 
 

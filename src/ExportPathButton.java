@@ -1,9 +1,16 @@
 import javax.swing.*;
+import java.awt.*;
 
 class ExportPathButton extends JPanel{
     private  String exportPath;
     public ExportPathButton(JFrame frame,JButton[] processButtons){
-        JButton  exportPathButton=new JButton("Export to");
+
+        JButton  exportPathButton=new JButton("...");
+
+        JTextField pathTextField = new JTextField(20);
+        pathTextField.setEditable(false);
+
+        JLabel exportLabel = new JLabel("Export:");
 
         exportPathButton.addActionListener(e->{
             JFileChooser fileChooserObj=new JFileChooser();
@@ -14,16 +21,29 @@ class ExportPathButton extends JPanel{
             if (result != JFileChooser.APPROVE_OPTION) {
                 fileChooserObj.cancelSelection();
                 TestingUiApp.exportNotNull=false;
+                pathTextField.setText(null);
                 TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,TestingUiApp.exportNotNull,processButtons);
                 return;
             }
-            TestingUiApp.exportNotNull=true;
+
+
+
             exportPath=fileChooserObj.getSelectedFile().getAbsolutePath();
+            pathTextField.setText(fileChooserObj.getSelectedFile().getAbsolutePath());
+            //enable process buttons
+            TestingUiApp.exportNotNull=true;
             TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,TestingUiApp.exportNotNull,processButtons);
 
         });
+        // Create a panel to hold label and text field horizontally
+        JPanel pathPanel = new JPanel();
+        pathPanel.setLayout(new BorderLayout());
+        pathPanel.add(exportLabel, BorderLayout.NORTH);
+        pathPanel.add(pathTextField, BorderLayout.CENTER);
+        pathPanel.add(exportPathButton, BorderLayout.EAST);
 
-        add(exportPathButton);
+        add(pathPanel);
+
     }
 
     public String exportPathSelected(){

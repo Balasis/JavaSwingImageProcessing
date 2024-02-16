@@ -37,10 +37,10 @@ public class TestingUiApp {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //a layout so we can view more than 1 button.
-        frame.setLayout(new FlowLayout());
+        frame.setLayout(new BorderLayout());
 
         //set Dimensions to the frame (main window)
-        frame.setSize(700, 400);
+       frame.setSize(700, 400);
 
         //disable resize of the window
        frame.setResizable(false);
@@ -76,18 +76,52 @@ public class TestingUiApp {
 
 
 
-        frame.getContentPane().add(browseButton);
 
 
-        frame.getContentPane().add( processButtons[0]);
-        frame.getContentPane().add(exportPathButton);
 
-        // I disable the button if there is null to browse Image
-        //OK after a bit of search here's the CATCH ON THIS
+
+
+
+        //Setting up the UI structure
+        //(A mix of nested JPanels in order to form the UI)
+
+        //Note about setting Sizes: it seems like that the sizes inside a JPanel are controlled my layoutManager in swing
+        //therefore instead of setSize won't work because it doesn't notify the LayoutManager about the size
+        //it would like to have...for this reason we use setPreferredSize which notifies the LayoutManager of Swing(upper JPanel)
+
+        //Note 2:Each position in BordayLayout (NORTH,CENTER,SOUTH,EAST E.T.C) can accept only one element(therefore we nest them)
+
+        //spacers (I use them in panels to add just a space)
+        JPanel topSpacer = new JPanel();
+        topSpacer.setPreferredSize(new Dimension(10, 20));
+
+        JPanel bottomSpacer = new JPanel();
+        bottomSpacer.setPreferredSize(new Dimension(10, 100));
+
+
+
+
+        JPanel browseAndExportPanels = new JPanel();
+        browseAndExportPanels.setLayout(new BorderLayout());
+        browseAndExportPanels.add(topSpacer,BorderLayout.NORTH);
+        browseAndExportPanels.add(browseButton,BorderLayout.CENTER);
+        browseAndExportPanels.add(exportPathButton,BorderLayout.SOUTH);
+
+
+        JPanel processButtonsAndBottomSpacerPanel = new JPanel();
+        processButtonsAndBottomSpacerPanel.add(processButtons[0],BorderLayout.NORTH);
+        processButtonsAndBottomSpacerPanel.add(bottomSpacer,BorderLayout.SOUTH);
+
+
+        frame.getContentPane().add(browseAndExportPanels,BorderLayout.NORTH);
+        frame.getContentPane().add(processButtonsAndBottomSpacerPanel,BorderLayout.SOUTH);
+
+
+        // Initially we disable the process buttons
         processButtons[0].setEnabled(browseButton.getImageFile() != null); // Disable the button
 
         // Display the window
-    //  frame.pack();//seems like pack was affecting the size
+     // frame.pack();//seems like pack was affecting the size
         frame.setVisible(true);
     }
 
