@@ -40,7 +40,7 @@ public class TestingUiApp {
         frame.setLayout(new BorderLayout());
 
         //set Dimensions to the frame (main window)
-       frame.setSize(700, 400);
+       frame.setSize(800, 300);
 
         //disable resize of the window
        frame.setResizable(false);
@@ -69,7 +69,10 @@ public class TestingUiApp {
             // Create new bufferedImage from the current processed 2d Array
             BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(browseButton.getImageFile());
             //Set path for the image to be saved as well as the name
-            File outputFile = new File("./theImageOutput.jpg");
+            String pathChosenToExport=  exportPathButton.exportPathSelected() + "/";
+            String browseringFileName=browseButton.getTheNameOfBrowseFileExtensionIncluded();
+
+            File outputFile = new File(pathChosenToExport+browseringFileName);
             //Export the img
             exportImg(outputBufferedImage,outputFile);
         });
@@ -82,52 +85,100 @@ public class TestingUiApp {
 
 
 
-        //Setting up the UI structure
-        //(A mix of nested JPanels in order to form the UI)
+                        //SETTING UP THE UI STRUCTURE (SPLITTED INTO NORTH AND SOUTH border layouts)
 
-        //Note about setting Sizes: it seems like that the sizes inside a JPanel are controlled my layoutManager in swing
+        //Note 1:nested JPanels in order to form the UI
+
+        //Note 2: (Sizes) it seems like that the sizes inside a JPanel are controlled my layoutManager in swing
         //therefore instead of setSize won't work because it doesn't notify the LayoutManager about the size
         //it would like to have...for this reason we use setPreferredSize which notifies the LayoutManager of Swing(upper JPanel)
 
-        //Note 2:Each position in BordayLayout (NORTH,CENTER,SOUTH,EAST E.T.C) can accept only one element(therefore we nest them)
-
-        //spacers (I use them in panels to add just a space)
-        JPanel topSpacer = new JPanel();
-        topSpacer.setPreferredSize(new Dimension(10, 20));
-
-        JPanel bottomSpacer = new JPanel();
-        bottomSpacer.setPreferredSize(new Dimension(10, 100));
+        //Note 3:Each position in BorderLayout (NORTH,CENTER,SOUTH,EAST E.T.C) can accept only one element(therefore we nest them)
 
 
+        //=========================================NORTH SIDE OF MAIN FRAME (WelcomeText && browse-export panels) ======================================//
+
+                //Creating the Welcome Text
+                JPanel welcomeText = new JPanel();
+                        welcomeText.setLayout(new BorderLayout());
 
 
-        JPanel browseAndExportPanels = new JPanel();
-        browseAndExportPanels.setLayout(new BorderLayout());
-        browseAndExportPanels.add(topSpacer,BorderLayout.NORTH);
-        browseAndExportPanels.add(browseButton,BorderLayout.CENTER);
-        browseAndExportPanels.add(exportPathButton,BorderLayout.SOUTH);
+
+                        //Creating text and setting the properties of it
+                        JTextArea textArea = new JTextArea("Browse an image and select export path. Then choose among the filters to export it");
+
+                        textArea.setEditable(false);
+                        textArea.setBackground(frame.getBackground());
+                        textArea.setFocusable(false);
+
+                        //creating Space for North position
+                        JPanel topSpacerText = new JPanel();
+                        topSpacerText.setPreferredSize(new Dimension(10, 10));
+
+                        //adding textArea into Container in order to center it
+                        JPanel textAreaContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                        textAreaContainer.add(textArea);
+
+                        //Finally adding both in the welcome text panel
+                        welcomeText.add(topSpacerText,BorderLayout.NORTH);
+                        welcomeText.add(textAreaContainer,BorderLayout.CENTER);
 
 
-        JPanel processButtonsAndBottomSpacerPanel = new JPanel();
-        processButtonsAndBottomSpacerPanel.add(processButtons[0],BorderLayout.NORTH);
-        processButtonsAndBottomSpacerPanel.add(bottomSpacer,BorderLayout.SOUTH);
+
+                //Creating the browseAndExportPanels
+                JPanel browseAndExportPanels = new JPanel();
+                        browseAndExportPanels.setLayout(new BorderLayout());
+                            //creating a space for north position
+                            JPanel topSpacer = new JPanel();
+                            topSpacer.setPreferredSize(new Dimension(10, 10));
+                        browseAndExportPanels.add(topSpacer,BorderLayout.NORTH);
+                        browseAndExportPanels.add(browseButton,BorderLayout.CENTER);
+                        browseAndExportPanels.add(exportPathButton,BorderLayout.SOUTH);
 
 
-        frame.getContentPane().add(browseAndExportPanels,BorderLayout.NORTH);
+        //Merge them into one :NORTH Border layout
+        JPanel welcomeTextAndBrowseAndExportPanels = new JPanel();
+        welcomeTextAndBrowseAndExportPanels.setLayout(new BorderLayout());
+        welcomeTextAndBrowseAndExportPanels.add(welcomeText,BorderLayout.NORTH);
+        welcomeTextAndBrowseAndExportPanels.add(browseAndExportPanels,BorderLayout.SOUTH);
+
+
+
+
+
+
+        //=========================================SOUTH SIDE OF MAIN FRAME ======================================//
+
+        //Creating the processButtons Panel (border layout..north will be a space Panel and South will be another
+        //Container Panel in flow Layout which will hold all the processing buttons, one next to other(flow))
+                JPanel processButtonsAndBottomSpacerPanel = new JPanel();
+
+                //adding for spacing
+                JPanel bottomSpacer = new JPanel();
+                bottomSpacer.setPreferredSize(new Dimension(10, 100));
+
+                //Nest the buttons into a container which has flow layout so buttons will appear next to each other.
+                JPanel processButtonsAndBottomSpacerPanelFlowed = new JPanel(new FlowLayout());
+                //an enhanced for in order to add each processButton into the (Flowed) container
+                for (JButton processButton : processButtons) {
+                    processButtonsAndBottomSpacerPanelFlowed.add(processButton);
+                }
+
+                processButtonsAndBottomSpacerPanel.add(processButtonsAndBottomSpacerPanelFlowed,BorderLayout.NORTH);
+                processButtonsAndBottomSpacerPanel.add(bottomSpacer,BorderLayout.SOUTH);
+
+
+
+        //====================MERGING THE NORTH AND THE SOUTH Border layouts OF MAIN FRAME ===================//
+        frame.getContentPane().add(welcomeTextAndBrowseAndExportPanels,BorderLayout.NORTH);
         frame.getContentPane().add(processButtonsAndBottomSpacerPanel,BorderLayout.SOUTH);
 
-
         // Initially we disable the process buttons
-        processButtons[0].setEnabled(browseButton.getImageFile() != null); // Disable the button
+        enableOrDisableProcessButtons(browserNotNull,exportNotNull,processButtons);
 
         // Display the window
-     // frame.pack();//seems like pack was affecting the size
         frame.setVisible(true);
     }
-
-
-
-
 
 
 
@@ -199,8 +250,10 @@ public class TestingUiApp {
 
 
     public static void exportImg(BufferedImage outputBufferedImage,File outputFile){
-        try {
-            OutputStream outputStream = new FileOutputStream(outputFile);
+        //adding the declare inside the try named try-width-resources as I read it autoclose at the end of the block
+        //previously that I had it inside I couldn't delete the image that I output because it was held by jdk
+        try ( OutputStream outputStream = new FileOutputStream(outputFile)){
+
             ImageIO.write(outputBufferedImage, "jpg", outputStream);
             System.out.println("Image saved successfully.");
         } catch (IOException e) {

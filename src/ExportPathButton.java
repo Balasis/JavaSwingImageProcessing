@@ -6,8 +6,9 @@ class ExportPathButton extends JPanel{
     public ExportPathButton(JFrame frame,JButton[] processButtons){
 
         JButton  exportPathButton=new JButton("...");
+        //setting characters... I tried to change just the width at the start but wouldn't make much sense anyway...(didn't work)
+        JTextField pathTextField = new JTextField(50);
 
-        JTextField pathTextField = new JTextField(20);
         pathTextField.setEditable(false);
 
         JLabel exportLabel = new JLabel("Export:");
@@ -32,7 +33,7 @@ class ExportPathButton extends JPanel{
             pathTextField.setText(fileChooserObj.getSelectedFile().getAbsolutePath());
             //enable process buttons
             TestingUiApp.exportNotNull=true;
-            TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,TestingUiApp.exportNotNull,processButtons);
+            TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,true,processButtons);
 
         });
         // Create a panel to hold label and text field horizontally

@@ -12,10 +12,12 @@ import java.io.InputStream;
 
 class BrowseButton extends JPanel{
     private   int[][] currentImg2dArray;
+    private   String getTheNameOfBrowseringFile;
     public BrowseButton(JFrame frame,JButton[] processButtons){
         JButton browseButton=new JButton("...");
 
-        JTextField pathTextField = new JTextField(20);
+        //setting characters...I tried to change just the width at the start but wouldn't make much sense anyway...(didn't work)
+        JTextField pathTextField = new JTextField(50);
         pathTextField.setEditable(false);
 
         JLabel browseLabel = new JLabel("Browse:");
@@ -35,6 +37,7 @@ class BrowseButton extends JPanel{
 
             int result=fileChooserObj.showOpenDialog(frame);
 
+
             if (result != JFileChooser.APPROVE_OPTION) {
                 fileChooserObj.cancelSelection();
                 TestingUiApp.browserNotNull=false;
@@ -43,10 +46,25 @@ class BrowseButton extends JPanel{
                 return;
             }
 
+
+
+
             File selectedFile = fileChooserObj.getSelectedFile();
+            getTheNameOfBrowseringFile=fileChooserObj.getSelectedFile().getName();
             File inputFile = new File(selectedFile.getAbsolutePath());
-            pathTextField.setText(selectedFile.getAbsolutePath());
+
             currentImg = fetchImage(inputFile);
+            if (currentImg==null){
+                fileChooserObj.cancelSelection();
+                TestingUiApp.browserNotNull=false;
+                pathTextField.setText(null);
+                TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,TestingUiApp.exportNotNull,processButtons);
+                JOptionPane.showMessageDialog(null, "Please enter an Image File", "Invalid File", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            pathTextField.setText(selectedFile.getAbsolutePath());
+
             //Creating a 2d Array using BufferedImage dimensions
             assert currentImg != null;
             currentImg2dArray = create2dArrayUsingBufferedImage(currentImg);
@@ -54,7 +72,7 @@ class BrowseButton extends JPanel{
             //Populate the currentImg2dArray with the corresponding RGB value of each pixel of currentImg
             populate2dArrWithRGBFromTheBufferedImg(currentImg2dArray, currentImg);
             TestingUiApp.browserNotNull=true;
-            TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,TestingUiApp.exportNotNull,processButtons);
+            TestingUiApp.enableOrDisableProcessButtons(true,TestingUiApp.exportNotNull,processButtons);
         });
 
 
@@ -76,7 +94,9 @@ class BrowseButton extends JPanel{
         return currentImg2dArray;
     }
 
-
+    public String getTheNameOfBrowseFileExtensionIncluded(){
+        return getTheNameOfBrowseringFile;
+    }
 
 
     //By Using getRGB(x,y) we get the rgb value of its pixel (which is an int number) and we place it inside each
