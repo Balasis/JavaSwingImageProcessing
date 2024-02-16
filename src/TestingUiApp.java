@@ -9,10 +9,15 @@ import javax.imageio.ImageIO;
 
 
 public class TestingUiApp {
+    //These two define if user has browsed an image and has chosen an export directory.
+    //Once both become true the processing buttons become available to use.
     static boolean browserNotNull=false;
     static boolean exportNotNull=false;
+
     public static void main(String[] args) {
-        //Display UI using swing. So far we just have a frame and a button and trying to understand how to form the ui and add functionality .
+        //Builds the ui by adding a frame and inside of it buttons with addActionListeners to add functionality.
+        //invokeLater is used to ensure that a piece of code is executed on  a special thread responsible for
+        // handling Swing components and events
         SwingUtilities.invokeLater(TestingUiApp::createAndShowGUI);
     }
 
@@ -20,44 +25,41 @@ public class TestingUiApp {
 
 
     private static void createAndShowGUI() {
-        //all of the buttons are constructed into convertImageButtons
-        // and classes extend Into extends JPanel (JPanel exists in Swing library so you have them access through that here)
+
+        //BrowseButton and ExportPathButton classes are subclasses of JPanel (by using extend JPanel)
+        //JPanel already exist in Swing.
 
 
-        // Create the window
+        // Create the window(frame)
         JFrame frame = new JFrame("Image-Processing");
 
-        //it closes the application when window is closed
+        //We set to close the application when window is closed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //redesign layout so it will accept both buttons otherwise it will just center them.
+        //a layout so we can view more than 1 button.
         frame.setLayout(new FlowLayout());
 
-        //set Dimensions
+        //set Dimensions to the frame (main window)
         frame.setSize(700, 400);
 
-        //disable resize
+        //disable resize of the window
        frame.setResizable(false);
 
-        // Add components
-        //The idea is to create an array with JButton references that I want to enable if browseButton.getImageFile() is not null
-        //and there is also an external path(not null).
+        // Add components(buttons) into the window
 
-        //I pass this array to browse button listener and to external path button listener so every time it checks and when
-        //both are not null they can activate the buttons in the array.
-
-
+        //First I add all the processing buttons into an array. Reason is that we will use later the array to
+        //activate these buttons once the browse and export path are chosen...(browserNotNull and exportNotNull turn true)
         JButton[] processButtons={
                 new JButton("GreyScale")
         };
 
-        //browses the image file,activates and Disactivates the buttons that process the image
-        //You can view it in the BrowseButton.java , uses extend JPanel so we can use it here through Swing(since JPanel is superclass of swing)
+
+        // browser is to choose path (and also creates the 2d array and populate the rgb values), while export path just get a path.
+        //Both of them in the end of their listeners run enableOrDisableProcessButtons to activate or deactivate the processButtons
         BrowseButton browseButton=new BrowseButton(frame,processButtons);
-
-
-        //ExportButton
         ExportPathButton exportPathButton=new ExportPathButton(frame,processButtons);
+
+
 
 
         //GreyScale Listener
