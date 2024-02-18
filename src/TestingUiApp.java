@@ -51,7 +51,10 @@ public class TestingUiApp {
         //activate these buttons once the browse and export path are chosen...(browserNotNull and exportNotNull turn true)
         JButton[] processButtons={
                 new JButton("GreyScale"),
-                new JButton("Negative")
+                new JButton("Negative"),
+                new JButton("Rotate Right"),
+                new JButton("Rotate Left"),
+                new JButton("Invert")
         };
 
 
@@ -90,6 +93,27 @@ public class TestingUiApp {
 
             File outputFile = new File(pathChosenToExport+browseringFileName);
             //Export the img
+            exportImg(outputBufferedImage,outputFile);
+        });
+        processButtons[2].addActionListener(e->{
+            BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(rotateRight(browseButton.getImageFile()));
+            String pathChosenToExport=  exportPathButton.exportPathSelected() + "/";
+            String browseringFileName=browseButton.getTheNameOfBrowseFileExtensionIncluded();
+            File outputFile = new File(pathChosenToExport+browseringFileName);
+            exportImg(outputBufferedImage,outputFile);
+        });
+        processButtons[3].addActionListener(e->{
+            BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(rotateLeft(browseButton.getImageFile()));
+            String pathChosenToExport=  exportPathButton.exportPathSelected() + "/";
+            String browseringFileName=browseButton.getTheNameOfBrowseFileExtensionIncluded();
+            File outputFile = new File(pathChosenToExport+browseringFileName);
+            exportImg(outputBufferedImage,outputFile);
+        });
+        processButtons[4].addActionListener(e->{
+            BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(invertImage(browseButton.getImageFile()));
+            String pathChosenToExport=  exportPathButton.exportPathSelected() + "/";
+            String browseringFileName=browseButton.getTheNameOfBrowseFileExtensionIncluded();
+            File outputFile = new File(pathChosenToExport+browseringFileName);
             exportImg(outputBufferedImage,outputFile);
         });
 
@@ -348,10 +372,38 @@ public class TestingUiApp {
 
             }
         }
-
-
     }
-
-
-
+    public static int[][] rotateLeft(int[][] mat) {
+        final int M = mat.length;
+        final int N = mat[0].length;
+        int[][] ret = new int[N][M];
+        for (int r = 0; r < M; r++) {
+            for (int c = 0; c < N; c++) {
+                ret[c][M-1-r] = mat[r][c];
+            }
+        }
+        return ret;
+    }
+    public static int[][] rotateRight(int[][] mat) {
+        final int M = mat.length;
+        final int N = mat[0].length;
+        int[][] ret = new int[N][M];
+        for (int r = 0; r < M; r++) {
+            for (int c = 0; c < N; c++) {
+                ret[N-1-c][r] = mat[r][c];
+            }
+        }
+        return ret;
+    }
+    public static int [][] invertImage(int[][] mat){
+        final int M = mat.length;
+        final int N = mat[0].length;
+        int[][] ret = new int[N][M];
+        for (int r = 0; r < M; r++) {
+            for (int c = 0; c < N; c++) {
+                ret[N-1-c][r] = mat[c][r];
+            }
+        }
+        return ret;
+    }
 }
