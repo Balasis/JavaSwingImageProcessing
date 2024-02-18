@@ -110,7 +110,8 @@ public class TestingUiApp {
             exportImg(outputBufferedImage,outputFile);
         });
         processButtons[4].addActionListener(e->{
-            BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(invertImage(browseButton.getImageFile()));
+            invertImage(browseButton.getImageFile());
+            BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(browseButton.getImageFile());
             String pathChosenToExport=  exportPathButton.exportPathSelected() + "/";
             String browseringFileName=browseButton.getTheNameOfBrowseFileExtensionIncluded();
             File outputFile = new File(pathChosenToExport+browseringFileName);
@@ -395,15 +396,19 @@ public class TestingUiApp {
         }
         return ret;
     }
-    public static int [][] invertImage(int[][] mat){
+    public static void invertImage(int[][] mat){
         final int M = mat.length;
         final int N = mat[0].length;
-        int[][] ret = new int[N][M];
+        int[][] flipped = new int[N][M];
         for (int r = 0; r < M; r++) {
             for (int c = 0; c < N; c++) {
-                ret[N-1-c][r] = mat[c][r];
+                flipped[N-1-c][r] = mat[c][r];
             }
         }
-        return ret;
+        for (int i = 0; i < M; i++){
+            for (int j = 0; j < N; j++){
+                mat[i][j] = flipped[i][j];
+            }
+        }
     }
 }
