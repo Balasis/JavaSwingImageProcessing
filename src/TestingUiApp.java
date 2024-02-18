@@ -79,6 +79,7 @@ public class TestingUiApp {
             File outputFile = new File(pathChosenToExport+browseringFileName);
             //Export the img
             exportImg(outputBufferedImage,outputFile);
+            browseButton.reInsertFileFromBrowse();
         });
 
         //Negative Listener
@@ -94,6 +95,7 @@ public class TestingUiApp {
             File outputFile = new File(pathChosenToExport+browseringFileName);
             //Export the img
             exportImg(outputBufferedImage,outputFile);
+            browseButton.reInsertFileFromBrowse();
         });
         processButtons[2].addActionListener(e->{
             BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(rotateRight(browseButton.getImageFile()));
@@ -101,6 +103,7 @@ public class TestingUiApp {
             String browseringFileName=browseButton.getTheNameOfBrowseFileExtensionIncluded();
             File outputFile = new File(pathChosenToExport+browseringFileName);
             exportImg(outputBufferedImage,outputFile);
+            browseButton.reInsertFileFromBrowse();
         });
         processButtons[3].addActionListener(e->{
             BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(rotateLeft(browseButton.getImageFile()));
@@ -108,6 +111,7 @@ public class TestingUiApp {
             String browseringFileName=browseButton.getTheNameOfBrowseFileExtensionIncluded();
             File outputFile = new File(pathChosenToExport+browseringFileName);
             exportImg(outputBufferedImage,outputFile);
+            browseButton.reInsertFileFromBrowse();
         });
         processButtons[4].addActionListener(e->{
             invertImage(browseButton.getImageFile());
@@ -116,6 +120,7 @@ public class TestingUiApp {
             String browseringFileName=browseButton.getTheNameOfBrowseFileExtensionIncluded();
             File outputFile = new File(pathChosenToExport+browseringFileName);
             exportImg(outputBufferedImage,outputFile);
+            browseButton.reInsertFileFromBrowse();
         });
 
 
@@ -217,7 +222,6 @@ public class TestingUiApp {
         // Display the window
         frame.setVisible(true);
     }
-
 
 
 

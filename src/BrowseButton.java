@@ -13,6 +13,7 @@ import java.io.InputStream;
 class BrowseButton extends JPanel{
     private   int[][] currentImg2dArray;
     private   String getTheNameOfBrowseringFile;
+    private  File selectedFile;
     public BrowseButton(JFrame frame,JButton[] processButtons){
         JButton browseButton=new JButton("...");
 
@@ -39,6 +40,7 @@ class BrowseButton extends JPanel{
 
             //we check if user canceled and if he did recheck if still valid path to enable or disable buttons
             if (result != JFileChooser.APPROVE_OPTION) {
+
                 fileChooserObj.cancelSelection();
                 TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,TestingUiApp.exportNotNull,processButtons);
                 return;
@@ -47,7 +49,7 @@ class BrowseButton extends JPanel{
             //getting the name and also put the chosen file into File object for further processing
             //the getTheNameOfBrowseringFile is being extracted  by the output methods using
             // getTheNameOfBrowseFileExtensionIncluded() method (look below for it)
-            File selectedFile = fileChooserObj.getSelectedFile();
+           selectedFile = fileChooserObj.getSelectedFile();
             getTheNameOfBrowseringFile=fileChooserObj.getSelectedFile().getName();
             File inputFile = new File(selectedFile.getAbsolutePath());
 
@@ -58,12 +60,13 @@ class BrowseButton extends JPanel{
 
             // Therefore I just use an if:
             if (currentImg==null){
+
                 //resetting everything...
                 fileChooserObj.cancelSelection();
                 TestingUiApp.browserNotNull=false;
               pathTextField.setText(null);
                 TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,TestingUiApp.exportNotNull,processButtons);
-                //pop up window..to come to this point it means that the user has chosen a file but not one that could be read from Image.IO.read
+                //pop up window...to come to this point it means that the user has chosen a file but not one that could be read from Image.IO.read
                 JOptionPane.showMessageDialog(null, "Please enter an Image File", "Invalid File", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
@@ -96,6 +99,15 @@ class BrowseButton extends JPanel{
 
 
     }
+    public void reInsertFileFromBrowse(){
+        System.out.println(selectedFile.getAbsolutePath());
+        File inputFile = new File(selectedFile.getAbsolutePath());
+
+        BufferedImage currentImg = fetchImage(inputFile);
+        currentImg2dArray = create2dArrayUsingBufferedImage(currentImg);
+        populate2dArrWithRGBFromTheBufferedImg(currentImg2dArray, currentImg);
+    }
+
 
 //process methods get the image obj from this method:
     public  int[][] getImageFile(){
