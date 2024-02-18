@@ -148,7 +148,8 @@ public class TestingUiApp {
 
 
                         //Creating text and setting the properties of it
-                        JTextArea textArea = new JTextArea("Browse an image and select export path. Then choose among the filters to export it");
+                        JTextArea textArea = new JTextArea("Browse an image and select export path.\n Then choose among the filters to export it." +
+                                " Choose the same browse-export path to process the same image multiple times");
 
                         textArea.setEditable(false);
                         textArea.setBackground(frame.getBackground());
