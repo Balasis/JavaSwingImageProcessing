@@ -407,7 +407,7 @@ public class Main {
         int[][] flipped = new int[width][height];
         for (int r = 0; r < width; r++) {
             for (int c = 0; c < height; c++) {
-                flipped[r][c] = mat[width - 1 - r][height - 1 - c];
+                flipped[r][c] = mat[width - 1 - r][c];
             }
         }
         for (int i = 0; i < width; i++){
