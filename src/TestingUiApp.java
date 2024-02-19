@@ -380,38 +380,38 @@ public class TestingUiApp {
         }
     }
     public static int[][] rotateLeft(int[][] mat) {
-        final int M = mat.length;
-        final int N = mat[0].length;
-        int[][] ret = new int[N][M];
-        for (int r = 0; r < M; r++) {
-            for (int c = 0; c < N; c++) {
-                ret[c][M-1-r] = mat[r][c];
+        final int width = mat.length;
+        final int height = mat[0].length;
+        int[][] ret = new int[height][width];
+        for (int r = 0; r < width; r++) {
+            for (int c = 0; c < height; c++) {
+                ret[c][width-1-r] = mat[r][c];
             }
         }
         return ret;
     }
     public static int[][] rotateRight(int[][] mat) {
-        final int M = mat.length;
-        final int N = mat[0].length;
-        int[][] ret = new int[N][M];
-        for (int r = 0; r < M; r++) {
-            for (int c = 0; c < N; c++) {
-                ret[N-1-c][r] = mat[r][c];
+        final int width = mat.length;
+        final int height = mat[0].length;
+        int[][] ret = new int[height][width];
+        for (int r = 0; r < width; r++) {
+            for (int c = 0; c < height; c++) {
+                ret[height-1-c][r] = mat[r][c];
             }
         }
         return ret;
     }
     public static void invertImage(int[][] mat){
-        final int M = mat.length;
-        final int N = mat[0].length;
-        int[][] flipped = new int[N][M];
-        for (int r = 0; r < M; r++) {
-            for (int c = 0; c < N; c++) {
-                flipped[N-1-c][r] = mat[c][r];
+        final int width = mat.length;
+        final int height = mat[0].length;
+        int[][] flipped = new int[width][height];
+        for (int r = 0; r < width; r++) {
+            for (int c = 0; c < height; c++) {
+                flipped[r][c] = mat[width - 1 - r][height - 1 - c];
             }
         }
-        for (int i = 0; i < M; i++){
-            for (int j = 0; j < N; j++){
+        for (int i = 0; i < width; i++){
+            for (int j = 0; j < height; j++){
                 mat[i][j] = flipped[i][j];
             }
         }
