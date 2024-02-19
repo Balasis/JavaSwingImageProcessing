@@ -42,7 +42,7 @@ class BrowseButton extends JPanel{
             if (result != JFileChooser.APPROVE_OPTION) {
 
                 fileChooserObj.cancelSelection();
-                TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,TestingUiApp.exportNotNull,processButtons);
+                Main.enableOrDisableProcessButtons(Main.browserNotNull, Main.exportNotNull,processButtons);
                 return;
             }
 
@@ -63,9 +63,9 @@ class BrowseButton extends JPanel{
 
                 //resetting everything...
                 fileChooserObj.cancelSelection();
-                TestingUiApp.browserNotNull=false;
+                Main.browserNotNull=false;
               pathTextField.setText(null);
-                TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,TestingUiApp.exportNotNull,processButtons);
+                Main.enableOrDisableProcessButtons(Main.browserNotNull, Main.exportNotNull,processButtons);
                 //pop up window...to come to this point it means that the user has chosen a file but not one that could be read from Image.IO.read
                 JOptionPane.showMessageDialog(null, "Please enter an Image File", "Invalid File", JOptionPane.INFORMATION_MESSAGE);
                 return;
@@ -82,8 +82,8 @@ class BrowseButton extends JPanel{
             populate2dArrWithRGBFromTheBufferedImg(currentImg2dArray, currentImg);
 
             //TURNS one of the two variabled needed true to enable the process buttons(rotate ,greyScale e.t.c)
-            TestingUiApp.browserNotNull=true;
-            TestingUiApp.enableOrDisableProcessButtons(true,TestingUiApp.exportNotNull,processButtons);
+            Main.browserNotNull=true;
+            Main.enableOrDisableProcessButtons(true, Main.exportNotNull,processButtons);
         });
 
 

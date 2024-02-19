@@ -32,9 +32,9 @@ class ExportPathButton extends JPanel{
             //here we check if user canceled and we restore
             if (result != JFileChooser.APPROVE_OPTION) {
                 fileChooserObj.cancelSelection();
-                TestingUiApp.exportNotNull=false;
+                Main.exportNotNull=false;
                 pathTextField.setText(null);
-                TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,TestingUiApp.exportNotNull,processButtons);
+                Main.enableOrDisableProcessButtons(Main.browserNotNull, Main.exportNotNull,processButtons);
                 return;
             }
 
@@ -43,8 +43,8 @@ class ExportPathButton extends JPanel{
             exportPath=fileChooserObj.getSelectedFile().getAbsolutePath();
             pathTextField.setText(fileChooserObj.getSelectedFile().getAbsolutePath());
             //enable process buttons
-            TestingUiApp.exportNotNull=true;
-            TestingUiApp.enableOrDisableProcessButtons(TestingUiApp.browserNotNull,true,processButtons);
+            Main.exportNotNull=true;
+            Main.enableOrDisableProcessButtons(Main.browserNotNull,true,processButtons);
 
         });
         // Create a panel to hold label and text field horizontally

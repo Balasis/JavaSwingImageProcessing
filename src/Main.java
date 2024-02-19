@@ -8,7 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 
-public class TestingUiApp {
+public class Main {
     //These two define if user has browsed an image and has chosen an export directory.
     //Once both become true the processing buttons become available to use.
     static boolean browserNotNull=false;
@@ -18,7 +18,7 @@ public class TestingUiApp {
         //Builds the ui by adding a frame and inside of it buttons with addActionListeners to add functionality.
         //invokeLater is used to ensure that a piece of code is executed on  a special thread responsible for
         // handling Swing components and events
-        SwingUtilities.invokeLater(TestingUiApp::createAndShowGUI);
+        SwingUtilities.invokeLater(Main::createAndShowGUI);
     }
 
 
