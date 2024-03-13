@@ -54,7 +54,8 @@ public class Main {
                 new JButton("Negative"),
                 new JButton("Rotate Right"),
                 new JButton("Rotate Left"),
-                new JButton("Invert")
+                new JButton("Invert"),
+                new JButton("GreyInkOpt")
         };
 
 
@@ -115,6 +116,15 @@ public class Main {
         });
         processButtons[4].addActionListener(e->{
             invertImage(browseButton.getImageFile());
+            BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(browseButton.getImageFile());
+            String pathChosenToExport=  exportPathButton.exportPathSelected() + "/";
+            String browseringFileName=browseButton.getTheNameOfBrowseFileExtensionIncluded();
+            File outputFile = new File(pathChosenToExport+browseringFileName);
+            exportImg(outputBufferedImage,outputFile);
+            browseButton.reInsertFileFromBrowse();
+        });
+        processButtons[5].addActionListener(e->{
+            GreyScaleInkOpt(browseButton.getImageFile());
             BufferedImage outputBufferedImage = createBufferedImageObjFrom2dArray(browseButton.getImageFile());
             String pathChosenToExport=  exportPathButton.exportPathSelected() + "/";
             String browseringFileName=browseButton.getTheNameOfBrowseFileExtensionIncluded();
@@ -345,6 +355,56 @@ public class Main {
                currentBlueValue=extractBlueFromRGBAint(the2dArray[x][y]);
                //Formula with some constants to create a number from 0 to 255
                int theFormula=(int) Math.round(0.2126 * currentRedValue + 0.7152 * currentGreenValue + 0.0722 * currentBlueValue);
+                //then you put the same value in rgb in red green and blue(its like picking the average but the weight depend on constant)
+                the2dArray[x][y]=convertRGBAtoInt(theFormula,theFormula,theFormula,currentAlphaValue);
+
+            }
+        }
+
+
+    }
+
+    public static void GreyScaleInkOpt(int[][] the2dArray){
+        int currentRedValue;
+        int currentGreenValue;
+        int currentBlueValue;
+        int currentAlphaValue;
+        int countDarkPixels=0;
+        int countWhiterPixels=0;
+
+        for (int x = 0; x < the2dArray.length; x++) {
+            for (int y = 0; y <  the2dArray[0].length; y++) {
+                //Extract values from the pixel
+                currentAlphaValue=extractAlphaFromRGBAint(the2dArray[x][y]);
+                currentRedValue=extractRedFromRGBAint(the2dArray[x][y]);
+                currentGreenValue=extractGreenFromRGBAint(the2dArray[x][y]);
+                currentBlueValue=extractBlueFromRGBAint(the2dArray[x][y]);
+                //Formula with some constants to create a number from 0 to 255
+                int grayScaleNum=(int) Math.round(0.2126 * currentRedValue + 0.7152 * currentGreenValue + 0.0722 * currentBlueValue);
+                if (grayScaleNum<150){
+                    countDarkPixels++;
+                }else{
+                    countWhiterPixels++;
+                }
+            }
+        }
+
+        for (int x = 0; x < the2dArray.length; x++) {
+            for (int y = 0; y <  the2dArray[0].length; y++) {
+                //Extract values from the pixel
+                currentAlphaValue=extractAlphaFromRGBAint(the2dArray[x][y]);
+                currentRedValue=extractRedFromRGBAint(the2dArray[x][y]);
+                currentGreenValue=extractGreenFromRGBAint(the2dArray[x][y]);
+                currentBlueValue=extractBlueFromRGBAint(the2dArray[x][y]);
+                //Formula with some constants to create a number from 0 to 255
+                int theFormula=(int) Math.round(0.2126 * currentRedValue + 0.7152 * currentGreenValue + 0.0722 * currentBlueValue);
+
+                if (countDarkPixels>countWhiterPixels){
+                    theFormula=theFormula<150? 250 : 150;
+                }else{
+                    theFormula=theFormula<150? 150 : 250;
+                }
+
                 //then you put the same value in rgb in red green and blue(its like picking the average but the weight depend on constant)
                 the2dArray[x][y]=convertRGBAtoInt(theFormula,theFormula,theFormula,currentAlphaValue);
 
